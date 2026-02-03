@@ -290,7 +290,7 @@ const HeroSection = () => {
   }, []);
 
   // Handle form submission
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     // Submit to Formspree
