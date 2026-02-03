@@ -2706,7 +2706,7 @@ function FAQSection({
       cursor: 'pointer',
     },
     ctaContainer: {
-      textAlign: 'center',
+      textAlign: 'center'  as const,
       marginTop: '60px',
       padding: isMobile ? '30px 20px' : '40px 20px',
       background: `linear-gradient(135deg, ${textColor}0D 0%, ${accentColor}0D 100%)`,

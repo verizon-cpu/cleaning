@@ -3736,7 +3736,7 @@ function Footer() {
                       cursor: 'pointer',
                       transition: 'all 0.3s ease',
                       color: '#FFFFFF',
-                      border: 'none',
+                      
                     }}
                     onClick={() => window.open(social.url, '_blank')}
                     aria-label={social.name}
@@ -4526,7 +4526,7 @@ function Footer() {
             cursor: 'pointer',
             transition: 'all 0.3s ease',
             color: '#FFD700',
-            border: 'none',
+            
           }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           aria-label="Back to top"
