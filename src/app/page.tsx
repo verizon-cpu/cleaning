@@ -3,7 +3,7 @@
 import { useState, useEffect, FormEvent, ChangeEvent, useRef } from 'react';
 import { useForm, ValidationError } from '@formspree/react';
 
-// Bottom CTA Buttons Component
+// Bottom CTA Buttons Component - UPDATED FOR MOBILE
 interface BottomCTAButtonsProps {
   onCallClick?: () => void;
   onQuoteClick?: () => void;
@@ -34,6 +34,17 @@ function BottomCTAButtons({
   showBookIcon = true
 }: BottomCTAButtonsProps) {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleCallClick = () => {
     if (onCallClick) {
@@ -60,8 +71,8 @@ function BottomCTAButtons({
   };
 
   const baseButtonStyle: React.CSSProperties = {
-    width: '105px',
-    height: '45px',
+    width: isMobile ? '90px' : '105px',
+    height: isMobile ? '40px' : '45px',
     borderRadius: '25px',
     display: 'flex',
     alignItems: 'center',
@@ -72,7 +83,7 @@ function BottomCTAButtons({
     overflow: 'hidden',
     fontFamily: "'Playfair Display', serif",
     fontWeight: 700,
-    fontSize: '11px',
+    fontSize: isMobile ? '10px' : '11px',
     letterSpacing: '0.5px',
     textTransform: 'uppercase' as const,
     flexShrink: 0,
@@ -127,23 +138,23 @@ function BottomCTAButtons({
     <div 
       style={{
         position: 'fixed',
-        bottom: '15px',
+        bottom: isMobile ? '10px' : '15px',
         left: '50%',
         transform: 'translateX(-50%)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '8px',
+        gap: isMobile ? '6px' : '8px',
         zIndex: 9999,
         pointerEvents: 'auto',
         background: 'rgba(255, 255, 255, 0.95)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderRadius: '50px',
-        padding: '8px',
+        padding: isMobile ? '6px' : '8px',
         boxShadow: '0 8px 30px rgba(0, 30, 80, 0.2)',
         border: '1px solid rgba(255, 215, 0, 0.3)',
-        width: 'calc(100vw - 30px)',
+        width: isMobile ? 'calc(100vw - 20px)' : 'calc(100vw - 30px)',
         maxWidth: '500px',
         overflowX: 'auto',
         WebkitOverflowScrolling: 'touch',
@@ -169,9 +180,9 @@ function BottomCTAButtons({
           ...(hoveredButton === 'call' ? callHoverStyle : {})
         }}
       >
-        <span style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: '5px' }}>
+        <span style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: isMobile ? '4px' : '5px' }}>
           {showPhoneIcon && (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <svg width={isMobile ? "12" : "14"} height={isMobile ? "12" : "14"} viewBox="0 0 24 24" fill="none">
               <path d="M20 10.999H22C22 5.869 18.127 2 12.99 2V4C17.052 4 20 6.943 20 10.999Z" fill="#001E50"/>
               <path d="M13 8C15.103 8 16 8.897 16 11H18C18 7.774 16.225 6 13 6V8ZM16.422 13.443C16.229 13.268 15.978 13.192 15.727 13.192C15.476 13.192 15.225 13.268 15.031 13.443L13.638 14.828C13.174 14.559 12.639 14.346 12.077 14.195C11.516 14.044 10.953 13.971 10.413 13.971C9.873 13.971 9.311 14.044 8.749 14.195C8.188 14.346 7.653 14.559 7.189 14.828L5.796 13.443C5.603 13.268 5.352 13.192 5.101 13.192C4.85 13.192 4.599 13.268 4.405 13.443L2.69 15.145C2.497 15.32 2.4 15.572 2.4 15.824C2.4 16.076 2.497 16.328 2.69 16.503L5.574 19.4C6.985 20.812 8.947 21.6 11.038 21.6C13.13 21.6 15.091 20.812 16.502 19.4L19.386 16.503C19.58 16.328 19.676 16.076 19.676 15.824C19.676 15.572 19.58 15.32 19.386 15.145L17.672 13.443H16.422Z" fill="#001E50"/>
             </svg>
@@ -190,9 +201,9 @@ function BottomCTAButtons({
           ...(hoveredButton === 'quote' ? quoteHoverStyle : {})
         }}
       >
-        <span style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: '5px' }}>
+        <span style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: isMobile ? '4px' : '5px' }}>
           {showQuoteIcon && (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <svg width={isMobile ? "12" : "14"} height={isMobile ? "12" : "14"} viewBox="0 0 24 24" fill="none">
               <path d="M9 12H15M12 9V15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           )}
@@ -210,9 +221,9 @@ function BottomCTAButtons({
           ...(hoveredButton === 'book' ? bookHoverStyle : {})
         }}
       >
-        <span style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: '5px' }}>
+        <span style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: isMobile ? '4px' : '5px' }}>
           {showBookIcon && (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <svg width={isMobile ? "12" : "14"} height={isMobile ? "12" : "14"} viewBox="0 0 24 24" fill="none">
               <path d="M5 12H19M12 5L19 12L12 19" stroke="#001E50" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           )}
@@ -376,11 +387,11 @@ const HeroSection = () => {
     headerContainer: {
       maxWidth: '1400px',
       margin: '0 auto',
-      padding: '20px 40px',
+      padding: isMobile ? '15px' : '20px 40px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      gap: '40px',
+      gap: isMobile ? '15px' : '40px',
     },
     
     brandSection: {
@@ -391,14 +402,14 @@ const HeroSection = () => {
     logoMark: {
       display: 'flex',
       alignItems: 'center',
-      gap: '16px',
+      gap: isMobile ? '10px' : '16px',
       textDecoration: 'none',
       cursor: 'pointer',
     },
     
     logoCircle: {
-      width: '50px',
-      height: '50px',
+      width: isMobile ? '40px' : '50px',
+      height: isMobile ? '40px' : '50px',
       borderRadius: '50%',
       background: 'linear-gradient(135deg, #FFD700 0%, #FFC107 100%)',
       display: 'flex',
@@ -408,7 +419,7 @@ const HeroSection = () => {
     },
     
     logoLetter: {
-      fontSize: '24px',
+      fontSize: isMobile ? '20px' : '24px',
       fontWeight: 900,
       color: '#001E50',
       fontFamily: "'Playfair Display', serif",
@@ -420,7 +431,7 @@ const HeroSection = () => {
     },
     
     logoName: {
-      fontSize: '28px',
+      fontSize: isMobile ? '22px' : '28px',
       fontWeight: 900,
       color: '#FFFFFF',
       letterSpacing: '1px',
@@ -429,7 +440,7 @@ const HeroSection = () => {
     },
     
     logoTagline: {
-      fontSize: '11px',
+      fontSize: isMobile ? '9px' : '11px',
       fontWeight: 900,
       color: '#FFD700',
       letterSpacing: '3px',
@@ -439,7 +450,7 @@ const HeroSection = () => {
     },
     
     navigation: {
-      display: 'flex',
+      display: isMobile ? 'none' : 'flex',
       alignItems: 'center',
       gap: '40px',
       flex: 1,
@@ -447,7 +458,7 @@ const HeroSection = () => {
     },
     
     navItem: (active: boolean) => ({
-      fontSize: '15px',
+      fontSize: isMobile ? '14px' : '15px',
       fontWeight: 900,
       color: active ? '#FFD700' : '#FFFFFF',
       textDecoration: 'none',
@@ -467,7 +478,7 @@ const HeroSection = () => {
       background: open ? 'rgba(255, 215, 0, 0.1)' : 'transparent',
       border: 'none',
       color: active || open ? '#FFD700' : '#FFFFFF',
-      fontSize: '15px',
+      fontSize: isMobile ? '14px' : '15px',
       fontWeight: 900,
       display: 'flex',
       alignItems: 'center',
@@ -488,7 +499,7 @@ const HeroSection = () => {
       backdropFilter: 'blur(20px)',
       borderRadius: '12px',
       padding: '12px',
-      minWidth: '280px',
+      minWidth: isMobile ? '250px' : '280px',
       boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
       border: '1px solid rgba(255, 215, 0, 0.3)',
       zIndex: 1000,
@@ -516,13 +527,13 @@ const HeroSection = () => {
     },
     
     serviceItemText: {
-      fontSize: '14px',
+      fontSize: isMobile ? '13px' : '14px',
       fontWeight: 900,
       fontFamily: "'Playfair Display', serif",
     },
     
     ctaSection: {
-      display: 'flex',
+      display: isMobile ? 'none' : 'flex',
       alignItems: 'center',
       gap: '30px',
     },
@@ -534,8 +545,8 @@ const HeroSection = () => {
     },
     
     phoneIcon: (active: boolean) => ({
-      width: '40px',
-      height: '40px',
+      width: isMobile ? '35px' : '40px',
+      height: isMobile ? '35px' : '40px',
       borderRadius: '50%',
       background: active ? 'rgba(255, 215, 0, 0.3)' : 'rgba(255, 215, 0, 0.2)',
       display: 'flex',
@@ -545,7 +556,7 @@ const HeroSection = () => {
     }),
     
     phoneLabel: {
-      fontSize: '11px',
+      fontSize: isMobile ? '10px' : '11px',
       fontWeight: 900,
       color: '#FFD700',
       letterSpacing: '1px',
@@ -554,7 +565,7 @@ const HeroSection = () => {
     },
     
     phoneNumber: (active: boolean) => ({
-      fontSize: '16px',
+      fontSize: isMobile ? '14px' : '16px',
       fontWeight: 900,
       color: active ? '#FFD700' : '#FFFFFF',
       textDecoration: 'none',
@@ -568,8 +579,8 @@ const HeroSection = () => {
       background: 'linear-gradient(135deg, #FFD700 0%, #FFC107 100%)',
       color: '#001E50',
       border: 'none',
-      padding: '14px 32px',
-      fontSize: '15px',
+      padding: isMobile ? '12px 24px' : '14px 32px',
+      fontSize: isMobile ? '14px' : '15px',
       fontWeight: 900,
       borderRadius: '30px',
       cursor: 'pointer',
@@ -581,7 +592,7 @@ const HeroSection = () => {
     }),
     
     mobileMenuButton: {
-      display: 'none',
+      display: isMobile ? 'flex' : 'none',
       background: 'transparent',
       border: 'none',
       flexDirection: 'column',
@@ -610,6 +621,7 @@ const HeroSection = () => {
       flexDirection: 'column',
       backdropFilter: 'blur(20px)',
       transition: 'all 0.3s ease',
+      overflowY: 'auto',
     },
     
     mobileMenuHeader: {
@@ -618,6 +630,7 @@ const HeroSection = () => {
       justifyContent: 'space-between',
       alignItems: 'center',
       borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+      flexShrink: 0,
     },
     
     mobileMenuContent: {
@@ -633,8 +646,9 @@ const HeroSection = () => {
       color: active ? '#FFD700' : '#FFFFFF',
       textDecoration: 'none',
       fontWeight: 900,
-      fontSize: '1.25rem',
-      padding: '1rem 0',
+      fontSize: isMobile ? '1.1rem' : '1.25rem',
+      paddingTop: '1rem',
+      paddingBottom: '1rem',
       borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
       transition: 'all 0.2s ease',
       cursor: 'pointer',
@@ -646,8 +660,9 @@ const HeroSection = () => {
       border: 'none',
       color: active || open ? '#FFD700' : '#FFFFFF',
       fontWeight: 900,
-      fontSize: '1.25rem',
-      padding: '1rem 0',
+      fontSize: isMobile ? '1.1rem' : '1.25rem',
+      paddingTop: '1rem',
+      paddingBottom: '1rem',
       borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
       transition: 'all 0.2s ease',
       cursor: 'pointer',
@@ -663,7 +678,9 @@ const HeroSection = () => {
       display: 'flex',
       flexDirection: 'column',
       gap: '0.5rem',
-      padding: '1rem 0 1rem 1rem',
+      paddingTop: '1rem',
+      paddingBottom: '1rem',
+      paddingLeft: '1rem',
       borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
     },
     
@@ -671,7 +688,7 @@ const HeroSection = () => {
       color: active ? '#FFD700' : '#FFFFFF',
       textDecoration: 'none',
       fontWeight: 900,
-      fontSize: '1rem',
+      fontSize: isMobile ? '0.95rem' : '1rem',
       padding: '0.75rem 1rem',
       borderRadius: '8px',
       transition: 'all 0.2s ease',
@@ -686,6 +703,7 @@ const HeroSection = () => {
       gap: '1.5rem',
       padding: '1.5rem',
       borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+      flexShrink: 0,
     },
     
     mobilePhoneWrapper: {
@@ -707,7 +725,7 @@ const HeroSection = () => {
     }),
     
     mobilePhoneLabel: {
-      fontSize: '0.875rem',
+      fontSize: isMobile ? '0.8rem' : '0.875rem',
       color: '#FFD700',
       fontWeight: 900,
       lineHeight: '1.2',
@@ -715,7 +733,7 @@ const HeroSection = () => {
     },
     
     mobilePhoneNumber: (active: boolean) => ({
-      fontSize: '1rem',
+      fontSize: isMobile ? '0.95rem' : '1rem',
       fontWeight: 900,
       color: active ? '#FFD700' : '#FFFFFF',
       textDecoration: 'none',
@@ -731,7 +749,7 @@ const HeroSection = () => {
       border: 'none',
       borderRadius: '30px',
       fontWeight: 900,
-      fontSize: '1rem',
+      fontSize: isMobile ? '0.95rem' : '1rem',
       cursor: 'pointer',
       transition: 'all 0.3s ease',
       textAlign: 'center',
@@ -760,7 +778,7 @@ const HeroSection = () => {
       backgroundImage: 'url("https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80")',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      backgroundAttachment: 'fixed',
+      backgroundAttachment: isMobile ? 'scroll' : 'fixed',
       zIndex: 1,
     },
     
@@ -777,37 +795,39 @@ const HeroSection = () => {
     heroContent: {
       position: 'relative',
       zIndex: 10,
-      paddingTop: '160px',
-      paddingBottom: '80px',
+      paddingTop: isMobile ? '120px' : '160px',
+      paddingBottom: isMobile ? '60px' : '80px',
       minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
+      paddingLeft: isMobile ? '20px' : '40px',
+      paddingRight: isMobile ? '20px' : '40px',
     },
     
     heroGrid: {
       maxWidth: '1280px',
       margin: '0 auto',
-      padding: '0 1.5rem',
       display: 'grid',
-      gridTemplateColumns: '1fr 400px',
-      gap: '4rem',
+      gridTemplateColumns: isMobile ? '1fr' : '1fr 400px',
+      gap: isMobile ? '2rem' : '4rem',
       alignItems: 'center',
+      width: '100%',
     },
     
     leftColumn: {
       display: 'flex',
       flexDirection: 'column',
-      gap: '2rem',
+      gap: isMobile ? '1.5rem' : '2rem',
     },
 
     excellenceBadge: (active: boolean) => ({
       display: 'flex',
       alignItems: 'center',
-      gap: '1rem',
+      gap: isMobile ? '0.75rem' : '1rem',
       backgroundColor: active ? 'rgba(255, 215, 0, 0.3)' : 'rgba(255, 215, 0, 0.25)',
       border: active ? '4px solid #FFD700' : '3px solid #FFD700',
       borderRadius: '60px',
-      padding: '1.25rem 2rem',
+      padding: isMobile ? '1rem 1.5rem' : '1.25rem 2rem',
       width: 'fit-content',
       backdropFilter: 'blur(10px)',
       boxShadow: active 
@@ -819,8 +839,8 @@ const HeroSection = () => {
     }),
     
     numberOneBadge: (active: boolean) => ({
-      width: '70px',
-      height: '70px',
+      width: isMobile ? '50px' : '70px',
+      height: isMobile ? '50px' : '70px',
       backgroundColor: active ? '#FFC107' : '#FFD700',
       borderRadius: '50%',
       display: 'flex',
@@ -838,13 +858,13 @@ const HeroSection = () => {
     numberOne: {
       color: '#001E50',
       fontWeight: '900',
-      fontSize: '2rem',
+      fontSize: isMobile ? '1.5rem' : '2rem',
       fontFamily: "'Playfair Display', serif",
       textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
     },
     
     badgeText: {
-      fontSize: '1.25rem',
+      fontSize: isMobile ? '1rem' : '1.25rem',
       fontWeight: '900',
       color: '#FFFFFF',
       lineHeight: '1.3',
@@ -856,17 +876,17 @@ const HeroSection = () => {
     houstonBold: {
       fontWeight: '900',
       color: '#FFD700',
-      fontSize: '1.4rem',
+      fontSize: isMobile ? '1.1rem' : '1.4rem',
       fontFamily: "'Playfair Display', serif",
       textShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
       display: 'inline',
     },
 
     headline: {
-      fontSize: '4rem',
+      fontSize: isMobile ? '2.5rem' : '4rem',
       fontWeight: '900',
       color: '#FFFFFF',
-      lineHeight: '1',
+      lineHeight: '1.1',
       margin: 0,
       fontFamily: "'Playfair Display', serif",
       letterSpacing: '-0.5px',
@@ -881,10 +901,11 @@ const HeroSection = () => {
       display: 'block',
       fontFamily: "'Playfair Display', serif",
       fontWeight: '900',
+      fontSize: isMobile ? '2.75rem' : '4rem',
     },
 
     subheadline: {
-      fontSize: '1.5rem',
+      fontSize: isMobile ? '1.25rem' : '1.5rem',
       color: 'rgba(255, 255, 255, 0.95)',
       lineHeight: '1.6',
       maxWidth: '600px',
@@ -896,17 +917,17 @@ const HeroSection = () => {
 
     trustGrid: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(3, 1fr)',
-      gap: '1rem',
+      gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+      gap: isMobile ? '0.75rem' : '1rem',
     },
     
     trustCard: (active: boolean) => ({
       display: 'flex',
       alignItems: 'center',
-      gap: '0.75rem',
+      gap: isMobile ? '0.5rem' : '0.75rem',
       backgroundColor: active ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.1)',
       borderRadius: '12px',
-      padding: '1.25rem 1rem',
+      padding: isMobile ? '1rem 0.75rem' : '1.25rem 1rem',
       border: `1px solid ${active ? '#FFD700' : 'rgba(255, 255, 255, 0.2)'}`,
       transition: 'all 0.3s ease',
       backdropFilter: 'blur(10px)',
@@ -914,8 +935,8 @@ const HeroSection = () => {
     }),
     
     trustIcon: {
-      width: '48px',
-      height: '48px',
+      width: isMobile ? '36px' : '48px',
+      height: isMobile ? '36px' : '48px',
       backgroundColor: 'rgba(255, 215, 0, 0.15)',
       borderRadius: '10px',
       display: 'flex',
@@ -925,7 +946,7 @@ const HeroSection = () => {
     },
     
     trustTitle: {
-      fontSize: '0.875rem',
+      fontSize: isMobile ? '0.8rem' : '0.875rem',
       fontWeight: '900',
       color: '#FFD700',
       marginBottom: '0.25rem',
@@ -933,7 +954,7 @@ const HeroSection = () => {
     },
     
     trustDesc: {
-      fontSize: '0.75rem',
+      fontSize: isMobile ? '0.7rem' : '0.75rem',
       color: 'rgba(255, 255, 255, 0.9)',
       fontFamily: "'Playfair Display', serif",
       fontWeight: '900',
@@ -941,8 +962,9 @@ const HeroSection = () => {
 
     reviewsContainer: {
       display: 'flex',
-      alignItems: 'center',
-      gap: '1.5rem',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: isMobile ? 'flex-start' : 'center',
+      gap: isMobile ? '1rem' : '1.5rem',
       flexWrap: 'wrap',
     },
     
@@ -953,13 +975,13 @@ const HeroSection = () => {
     
     starIcon: {
       color: '#FFD700',
-      fontSize: '1.75rem',
+      fontSize: isMobile ? '1.25rem' : '1.75rem',
       fontWeight: '900',
       textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
     },
     
     reviewText: {
-      fontSize: '1.125rem',
+      fontSize: isMobile ? '1rem' : '1.125rem',
       color: 'rgba(255, 255, 255, 0.95)',
       fontFamily: "'Playfair Display', serif",
       fontWeight: '900',
@@ -969,7 +991,7 @@ const HeroSection = () => {
       color: '#FFD700',
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
-      fontSize: '1.25rem',
+      fontSize: isMobile ? '1.1rem' : '1.25rem',
     },
     
     googleBadge: (active: boolean) => ({
@@ -977,7 +999,7 @@ const HeroSection = () => {
       alignItems: 'center',
       gap: '0.75rem',
       backgroundColor: active ? 'rgba(255, 255, 255, 0.25)' : 'rgba(255, 255, 255, 0.2)',
-      padding: '1.25rem 1.75rem',
+      padding: isMobile ? '1rem 1.25rem' : '1.25rem 1.75rem',
       borderRadius: '30px',
       backdropFilter: 'blur(10px)',
       border: active ? '3px solid rgba(255, 215, 0, 0.8)' : '3px solid rgba(255, 255, 255, 0.3)',
@@ -988,7 +1010,7 @@ const HeroSection = () => {
     }),
     
     googleText: {
-      fontSize: '1.125rem',
+      fontSize: isMobile ? '1rem' : '1.125rem',
       color: '#FFFFFF',
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
@@ -1003,7 +1025,7 @@ const HeroSection = () => {
       backgroundColor: active ? '#FFD700' : 'rgba(255, 215, 0, 0.1)',
       color: active ? '#001E50' : '#FFFFFF',
       border: active ? '3px solid #FFD700' : '3px solid rgba(255, 215, 0, 0.3)',
-      padding: '1.25rem 2rem',
+      padding: isMobile ? '1rem 1.5rem' : '1.25rem 2rem',
       borderRadius: '30px',
       backdropFilter: 'blur(10px)',
       transition: 'all 0.3s ease',
@@ -1015,7 +1037,7 @@ const HeroSection = () => {
     }),
     
     googleReviewsText: {
-      fontSize: '1.125rem',
+      fontSize: isMobile ? '1rem' : '1.125rem',
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
       letterSpacing: '0.5px',
@@ -1023,7 +1045,8 @@ const HeroSection = () => {
     
     reviewsCTAContainer: {
       display: 'flex',
-      alignItems: 'center',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: isMobile ? 'stretch' : 'center',
       gap: '1rem',
       flexWrap: 'wrap',
     },
@@ -1050,18 +1073,23 @@ const HeroSection = () => {
     },
     
     bostonText: {
-      fontSize: '0.875rem',
+      fontSize: isMobile ? '0.75rem' : '0.875rem',
       color: 'rgba(255, 255, 255, 0.95)',
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
     },
 
-    rightColumn: {},
+    rightColumn: {
+      marginTop: isMobile ? '2rem' : '0',
+    },
     
     bookingCard: {
       backgroundColor: '#FFFFFF',
       borderRadius: '20px',
-      padding: '2.5rem 2rem',
+      paddingTop: isMobile ? '2rem' : '2.5rem',
+      paddingRight: isMobile ? '1.5rem' : '2rem',
+      paddingBottom: isMobile ? '2rem' : '2.5rem',
+      paddingLeft: isMobile ? '1.5rem' : '2rem',
       boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
       border: '2px solid rgba(255, 215, 0, 0.3)',
     },
@@ -1072,7 +1100,7 @@ const HeroSection = () => {
     },
     
     formTitle: {
-      fontSize: '1.75rem',
+      fontSize: isMobile ? '1.5rem' : '1.75rem',
       fontWeight: '900',
       color: '#001E50',
       margin: '0 0 0.5rem 0',
@@ -1081,7 +1109,7 @@ const HeroSection = () => {
     },
     
     formSubtitle: {
-      fontSize: '1rem',
+      fontSize: isMobile ? '0.9rem' : '1rem',
       color: '#666',
       margin: 0,
       fontFamily: "'Playfair Display', serif",
@@ -1108,14 +1136,16 @@ const HeroSection = () => {
     },
     
     formInput: {
-      padding: '1rem 1.25rem',
+      padding: isMobile ? '0.875rem 1rem' : '1rem 1.25rem',
       borderRadius: '10px',
       border: '2px solid #E5E7EB',
-      fontSize: '0.875rem',
+      fontSize: isMobile ? '0.85rem' : '0.875rem',
       transition: 'all 0.3s ease',
       outline: 'none',
       fontFamily: "'Playfair Display', serif",
       fontWeight: '900',
+      width: '100%',
+      boxSizing: 'border-box',
       '&:focus': {
         borderColor: '#FFD700',
         boxShadow: '0 0 0 3px rgba(255, 215, 0, 0.2)',
@@ -1129,20 +1159,23 @@ const HeroSection = () => {
     
     formRow: {
       display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
       gap: '1rem',
     },
     
     formSelect: {
-      padding: '1rem 1.25rem',
+      padding: isMobile ? '0.875rem 1rem' : '1rem 1.25rem',
       borderRadius: '10px',
       border: '2px solid #E5E7EB',
-      fontSize: '0.875rem',
+      fontSize: isMobile ? '0.85rem' : '0.875rem',
       backgroundColor: '#FFFFFF',
       cursor: 'pointer',
       transition: 'all 0.3s ease',
       outline: 'none',
       fontFamily: "'Playfair Display', serif",
       fontWeight: '900',
+      width: '100%',
+      boxSizing: 'border-box',
       '&:focus': {
         borderColor: '#FFD700',
         boxShadow: '0 0 0 3px rgba(255, 215, 0, 0.2)',
@@ -1151,12 +1184,12 @@ const HeroSection = () => {
     
     submitButton: (active: boolean) => ({
       marginTop: '0.5rem',
-      padding: '1.25rem 2.5rem',
+      padding: isMobile ? '1rem 2rem' : '1.25rem 2.5rem',
       backgroundColor: '#001E50',
       color: '#FFFFFF',
       border: 'none',
       borderRadius: '10px',
-      fontSize: '1.125rem',
+      fontSize: isMobile ? '1rem' : '1.125rem',
       fontWeight: '900',
       cursor: 'pointer',
       display: 'flex',
@@ -1168,6 +1201,7 @@ const HeroSection = () => {
       fontFamily: "'Playfair Display', serif",
       transform: active ? 'translateY(-3px)' : 'translateY(0)',
       boxShadow: active ? '0 15px 40px rgba(0, 30, 80, 0.4)' : '0 10px 30px rgba(0, 30, 80, 0.3)',
+      width: '100%',
     }),
     
     buttonText: {
@@ -1179,7 +1213,7 @@ const HeroSection = () => {
     },
     
     formNote: {
-      fontSize: '0.75rem',
+      fontSize: isMobile ? '0.7rem' : '0.75rem',
       color: '#6B7280',
       textAlign: 'center',
       marginTop: '1rem',
@@ -1205,207 +1239,12 @@ const HeroSection = () => {
     },
     
     securityText: {
-      fontSize: '0.75rem',
+      fontSize: isMobile ? '0.7rem' : '0.75rem',
       color: '#6B7280',
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
     },
   };
-
-  // Get responsive styles for different screen sizes
-  const getResponsiveStyles = () => {
-    if (!hasMounted) {
-      return baseStyles;
-    }
-
-    const responsive = { ...baseStyles };
-    
-    const isTablet = window.innerWidth < 1024 && window.innerWidth >= 768;
-    const isMobileDevice = window.innerWidth < 768;
-    
-    if (isTablet) {
-      responsive.headerContainer = {
-        ...responsive.headerContainer,
-        padding: '1rem 2rem',
-      };
-      responsive.heroGrid = {
-        ...responsive.heroGrid,
-        gridTemplateColumns: '1fr',
-        gap: '3rem',
-        maxWidth: '90%',
-      };
-      responsive.headline = {
-        ...responsive.headline,
-        fontSize: '3.25rem',
-        lineHeight: '1',
-      };
-      responsive.subheadline = {
-        ...responsive.subheadline,
-        fontSize: '1.375rem',
-        maxWidth: '90%',
-      };
-      responsive.badgeText = {
-        ...responsive.badgeText,
-        fontSize: '1.1rem',
-      };
-      responsive.houstonBold = {
-        ...responsive.houstonBold,
-        fontSize: '1.2rem',
-      };
-      responsive.numberOne = {
-        ...responsive.numberOne,
-        fontSize: '1.75rem',
-      };
-      responsive.trustGrid = {
-        ...responsive.trustGrid,
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '1rem',
-      };
-      responsive.googleText = {
-        ...responsive.googleText,
-        fontSize: '1rem',
-      };
-      responsive.googleReviewsText = {
-        fontSize: '1rem',
-        fontWeight: '900',
-      };
-      responsive.reviewsContainer = {
-        ...responsive.reviewsContainer,
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        gap: '1rem',
-      };
-      responsive.reviewsCTAContainer = {
-        ...responsive.reviewsCTAContainer,
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        gap: '1rem',
-      };
-      responsive.bookingCard = {
-        ...responsive.bookingCard,
-        padding: '2rem 2rem',
-        maxWidth: '90%',
-        margin: '0 auto',
-      };
-      responsive.rightColumn = {
-        ...responsive.rightColumn,
-        marginTop: '0',
-      };
-      
-    } else if (isMobileDevice) {
-      responsive.headerContainer = {
-        ...responsive.headerContainer,
-        padding: '1rem',
-      };
-      responsive.navigation = {
-        ...responsive.navigation,
-        display: 'none',
-      };
-      responsive.ctaSection = {
-        ...responsive.ctaSection,
-        display: 'none',
-      };
-      responsive.mobileMenuButton = {
-        ...responsive.mobileMenuButton,
-        display: 'flex',
-      };
-      responsive.heroContent = {
-        ...responsive.heroContent,
-        paddingTop: '120px',
-        paddingBottom: '60px',
-      };
-      responsive.heroGrid = {
-        ...responsive.heroGrid,
-        gridTemplateColumns: '1fr',
-        gap: '2.5rem',
-        padding: '0 1rem',
-        maxWidth: '100%',
-      };
-      responsive.headline = {
-        ...responsive.headline,
-        fontSize: '2.75rem',
-        lineHeight: '1.1',
-      };
-      responsive.subheadline = {
-        ...responsive.subheadline,
-        fontSize: '1.25rem',
-        maxWidth: '100%',
-      };
-      responsive.badgeText = {
-        ...responsive.badgeText,
-        fontSize: '1rem',
-        lineHeight: '1.2',
-      };
-      responsive.houstonBold = {
-        ...responsive.houstonBold,
-        fontSize: '1.1rem',
-      };
-      responsive.numberOne = {
-        ...responsive.numberOne,
-        fontSize: '1.5rem',
-      };
-      responsive.trustGrid = {
-        ...responsive.trustGrid,
-        gridTemplateColumns: '1fr',
-        gap: '0.75rem',
-      };
-      responsive.googleText = {
-        ...responsive.googleText,
-        fontSize: '0.95rem',
-        fontWeight: '900',
-      };
-      responsive.googleReviewsText = {
-        fontSize: '0.95rem',
-        fontWeight: '900',
-      };
-      responsive.reviewsContainer = {
-        ...responsive.reviewsContainer,
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        gap: '1rem',
-      };
-      responsive.reviewsCTAContainer = {
-        ...responsive.reviewsCTAContainer,
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        gap: '1rem',
-      };
-      responsive.bookingCard = {
-        ...responsive.bookingCard,
-        padding: '2rem 1.5rem',
-        maxWidth: '100%',
-      };
-      responsive.formTitle = {
-        ...responsive.formTitle,
-        fontSize: '1.5rem',
-      };
-      responsive.formRow = {
-        ...responsive.formRow,
-        flexDirection: 'column',
-        gap: '1rem',
-      };
-      responsive.rightColumn = {
-        ...responsive.rightColumn,
-        marginTop: '1rem',
-      };
-      responsive.starIcon = {
-        ...responsive.starIcon,
-        fontSize: '1.5rem',
-      };
-      responsive.reviewText = {
-        ...responsive.reviewText,
-        fontSize: '1rem',
-      };
-      responsive.reviewRating = {
-        ...responsive.reviewRating,
-        fontSize: '1.1rem',
-      };
-    }
-    
-    return responsive;
-  };
-
-  const responsiveStyles = getResponsiveStyles();
 
   return (
     <section style={baseStyles.heroSection}>
@@ -1584,7 +1423,7 @@ const HeroSection = () => {
         backdropFilter: 'blur(20px)',
         borderBottom: '2px solid rgba(255, 215, 0, 0.3)',
       }}>
-        <div style={responsiveStyles.headerContainer}>
+        <div style={baseStyles.headerContainer}>
           <div style={baseStyles.brandSection}>
             <div 
               style={baseStyles.logoMark}
@@ -1604,8 +1443,8 @@ const HeroSection = () => {
             </div>
           </div>
           
-          {hasMounted && !isMobile && (
-            <nav style={responsiveStyles.navigation}>
+          {!isMobile && (
+            <nav style={baseStyles.navigation}>
               <div 
                 style={baseStyles.navItem(activeItem === 'home')}
                 onClick={() => handleNavigation('/')}
@@ -1699,8 +1538,8 @@ const HeroSection = () => {
             </nav>
           )}
           
-          {hasMounted && !isMobile && (
-            <div style={responsiveStyles.ctaSection}>
+          {!isMobile && (
+            <div style={baseStyles.ctaSection}>
               <div style={baseStyles.phoneWrapper}>
                 <div style={baseStyles.phoneIcon(activeItem === 'phoneIcon')}
                      onMouseEnter={() => setActiveItem('phoneIcon')}
@@ -1739,9 +1578,9 @@ const HeroSection = () => {
             </div>
           )}
           
-          {hasMounted && isMobile && (
+          {isMobile && (
             <button 
-              style={responsiveStyles.mobileMenuButton} 
+              style={baseStyles.mobileMenuButton} 
               onClick={toggleMobileMenu}
               aria-label="Toggle menu"
               onMouseEnter={() => setActiveItem('mobileMenuButton')}
@@ -1770,35 +1609,35 @@ const HeroSection = () => {
         <div style={baseStyles.overlayGradient}></div>
       </div>
       
-      <div style={responsiveStyles.heroContent}>
-        <div style={responsiveStyles.heroGrid}>
+      <div style={baseStyles.heroContent}>
+        <div style={baseStyles.heroGrid}>
           <div style={baseStyles.leftColumn}>
             <div 
-              style={responsiveStyles.excellenceBadge(excellenceBadgeActive)}
+              style={baseStyles.excellenceBadge(excellenceBadgeActive)}
               onMouseEnter={() => setExcellenceBadgeActive(true)}
               onMouseLeave={() => setExcellenceBadgeActive(false)}
               onTouchStart={() => handleTouchStart(setExcellenceBadgeActive, true)}
               onTouchEnd={() => handleTouchEnd(setExcellenceBadgeActive, false)}
             >
-              <div style={responsiveStyles.numberOneBadge(excellenceBadgeActive)}>
-                <span style={responsiveStyles.numberOne}>#1</span>
+              <div style={baseStyles.numberOneBadge(excellenceBadgeActive)}>
+                <span style={baseStyles.numberOne}>#1</span>
               </div>
-              <span style={responsiveStyles.badgeText}>
-                <strong style={responsiveStyles.houstonBold}>HOUSTON'S #1 RATED</strong> LUXURY CLEANING SERVICE
+              <span style={baseStyles.badgeText}>
+                <strong style={baseStyles.houstonBold}>HOUSTON'S #1 RATED</strong> LUXURY CLEANING SERVICE
               </span>
             </div>
             
-            <h1 style={responsiveStyles.headline}>
+            <h1 style={baseStyles.headline}>
               Experience The Pinnacle
               <span style={baseStyles.headlineHighlight}> of Clean</span>
             </h1>
             
-            <p style={responsiveStyles.subheadline}>
+            <p style={baseStyles.subheadline}>
               Where meticulous attention to detail meets unparalleled service excellence. 
               We transform spaces into pristine sanctuaries of comfort and luxury.
             </p>
             
-            <div style={responsiveStyles.trustGrid}>
+            <div style={baseStyles.trustGrid}>
               <div 
                 style={baseStyles.trustCard(trustCardActive === 0)}
                 onMouseEnter={() => setTrustCardActive(0)}
@@ -1857,21 +1696,21 @@ const HeroSection = () => {
               </div>
             </div>
             
-            <div style={responsiveStyles.reviewsContainer}>
+            <div style={baseStyles.reviewsContainer}>
               <div style={baseStyles.stars}>
                 {[...Array(5)].map((_, i) => (
-                  <span key={i} style={responsiveStyles.starIcon}>★</span>
+                  <span key={i} style={baseStyles.starIcon}>★</span>
                 ))}
               </div>
-              <div style={responsiveStyles.reviewText}>
-                <strong style={responsiveStyles.reviewRating}>4.9/5</strong> from 247 Google Reviews
+              <div style={baseStyles.reviewText}>
+                <strong style={baseStyles.reviewRating}>4.9/5</strong> from 247 Google Reviews
               </div>
-              <div style={responsiveStyles.reviewText}>
-                <strong style={responsiveStyles.reviewRating}>4.9/5</strong> click the button below to read our reviews
+              <div style={baseStyles.reviewText}>
+                <strong style={baseStyles.reviewRating}>4.9/5</strong> click the button below to read our reviews
               </div>
-              <div style={responsiveStyles.reviewsCTAContainer}>
+              <div style={baseStyles.reviewsCTAContainer}>
                 <div 
-                  style={responsiveStyles.googleBadge(googleBadgeActive)}
+                  style={baseStyles.googleBadge(googleBadgeActive)}
                   onClick={handleGoogleReviewsClick}
                   onMouseEnter={() => setGoogleBadgeActive(true)}
                   onMouseLeave={() => setGoogleBadgeActive(false)}
@@ -1884,11 +1723,11 @@ const HeroSection = () => {
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                   </svg>
-                  <span style={responsiveStyles.googleText}>Google's Choice</span>
+                  <span style={baseStyles.googleText}>Google's Choice</span>
                 </div>
                 {/* NEW: Read all Google reviews CTA button */}
                 <div 
-                  style={responsiveStyles.googleReviewsCTA(googleReviewsActive)}
+                  style={baseStyles.googleReviewsCTA(googleReviewsActive)}
                   onClick={handleGoogleReviewsClick}
                   onMouseEnter={() => setGoogleReviewsActive(true)}
                   onMouseLeave={() => setGoogleReviewsActive(false)}
@@ -1898,7 +1737,7 @@ const HeroSection = () => {
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.9C9.87812 3.30493 11.1801 2.99656 12.5 3H13C15.0843 3.11499 17.053 3.99478 18.5291 5.47087C20.0052 6.94696 20.885 8.91568 21 11V11.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  <span style={responsiveStyles.googleReviewsText}>Read All Google Reviews</span>
+                  <span style={baseStyles.googleReviewsText}>Read All Google Reviews</span>
                 </div>
               </div>
             </div>
@@ -1916,10 +1755,10 @@ const HeroSection = () => {
             </div>
           </div>
           
-          <div style={responsiveStyles.rightColumn}>
-            <div style={responsiveStyles.bookingCard}>
+          <div style={baseStyles.rightColumn}>
+            <div style={baseStyles.bookingCard}>
               <div style={baseStyles.cardHeader}>
-                <h3 style={responsiveStyles.formTitle}>Schedule Your Luxury Experience</h3>
+                <h3 style={baseStyles.formTitle}>Schedule Your Luxury Experience</h3>
                 <p style={baseStyles.formSubtitle}>Complimentary consultation & quote</p>
               </div>
               
@@ -1978,7 +1817,7 @@ const HeroSection = () => {
                   />
                 </div>
                 
-                <div style={responsiveStyles.formRow}>
+                <div style={baseStyles.formRow}>
                   <div style={{...baseStyles.formGroup, flex: 1}}>
                     <label style={baseStyles.inputLabel}>Zip Code *</label>
                     <input
@@ -2016,7 +1855,7 @@ const HeroSection = () => {
                 
                 <button 
                   type="submit" 
-                  style={responsiveStyles.submitButton(submitButtonActive)}
+                  style={baseStyles.submitButton(submitButtonActive)}
                   disabled={formspreeState.submitting}
                   onMouseEnter={() => setSubmitButtonActive(true)}
                   onMouseLeave={() => setSubmitButtonActive(false)}
@@ -2071,6 +1910,17 @@ const VideoTestimonialCard = ({
   setPlayingVideo 
 }: any) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handlePlayVideo = () => {
     if (playingVideo === video.id) {
@@ -2117,6 +1967,7 @@ const VideoTestimonialCard = ({
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         transform: activeVideo === index ? 'translateY(-10px)' : 'translateY(0)',
         cursor: 'pointer',
+        width: '100%',
       }}
       onMouseEnter={() => setActiveVideo(index)}
       onMouseLeave={() => setActiveVideo(null)}
@@ -2127,7 +1978,7 @@ const VideoTestimonialCard = ({
       {/* Video Thumbnail or Player */}
       <div style={{
         position: 'relative',
-        height: '250px',
+        height: isMobile ? '200px' : '250px',
         overflow: 'hidden',
         backgroundColor: '#000',
       }}>
@@ -2167,13 +2018,13 @@ const VideoTestimonialCard = ({
               left: '20px',
               backgroundColor: '#FFD700',
               color: '#001E50',
-              width: '50px',
-              height: '50px',
+              width: isMobile ? '40px' : '50px',
+              height: isMobile ? '40px' : '50px',
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '20px',
+              fontSize: isMobile ? '16px' : '20px',
               fontWeight: '900',
               boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
               zIndex: 2,
@@ -2196,8 +2047,8 @@ const VideoTestimonialCard = ({
               transition: 'opacity 0.3s ease',
             }}>
               <div style={{
-                width: '80px',
-                height: '80px',
+                width: isMobile ? '60px' : '80px',
+                height: isMobile ? '60px' : '80px',
                 backgroundColor: '#FFD700',
                 borderRadius: '50%',
                 display: 'flex',
@@ -2208,7 +2059,7 @@ const VideoTestimonialCard = ({
               }}>
                 <span style={{
                   color: '#001E50',
-                  fontSize: '2rem',
+                  fontSize: isMobile ? '1.5rem' : '2rem',
                   marginLeft: '8px',
                   fontWeight: '900',
                 }}>
@@ -2222,20 +2073,24 @@ const VideoTestimonialCard = ({
       
       {/* Video Content */}
       <div style={{
-        padding: '32px 24px',
+        paddingTop: isMobile ? '24px' : '32px',
+        paddingRight: isMobile ? '20px' : '24px',
+        paddingBottom: isMobile ? '24px' : '32px',
+        paddingLeft: isMobile ? '20px' : '24px',
         textAlign: 'left',
       }}>
         <h4 style={{
-          fontSize: '1.5rem',
+          fontSize: isMobile ? '1.25rem' : '1.5rem',
           fontWeight: '900',
           color: '#001E50',
-          margin: '0 0 8px 0',
+          marginTop: 0,
+          marginBottom: '8px',
           fontFamily: "'Playfair Display', serif",
         }}>
           {video.name}
         </h4>
         <p style={{
-          fontSize: '1rem',
+          fontSize: isMobile ? '0.9rem' : '1rem',
           color: '#6B7280',
           fontWeight: '900',
           fontFamily: "'Playfair Display', serif",
@@ -2244,7 +2099,7 @@ const VideoTestimonialCard = ({
           {video.location}
         </p>
         <div style={{
-          fontSize: '0.875rem',
+          fontSize: isMobile ? '0.75rem' : '0.875rem',
           color: '#FFD700',
           fontWeight: '900',
           fontFamily: "'Playfair Display', serif",
@@ -2257,7 +2112,7 @@ const VideoTestimonialCard = ({
           {video.role}
         </div>
         <p style={{
-          fontSize: '1rem',
+          fontSize: isMobile ? '0.9rem' : '1rem',
           color: '#4B5563',
           lineHeight: '1.6',
           margin: 0,
@@ -2277,8 +2132,16 @@ const StatsCounter = () => {
   const [yearsExperience, setYearsExperience] = useState(0);
   const [homesCleaned, setHomesCleaned] = useState(0);
   const [satisfactionRate, setSatisfactionRate] = useState(0);
-  
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
     // Animated counters
     const animateCounters = () => {
       const duration = 2000;
@@ -2318,6 +2181,7 @@ const StatsCounter = () => {
     
     return () => {
       clearTimeout(timer);
+      window.removeEventListener('resize', checkMobile);
     };
   }, []);
 
@@ -2326,11 +2190,11 @@ const StatsCounter = () => {
   return (
     <div style={{
       display: 'grid',
-      gridTemplateColumns: 'repeat(3, 1fr)',
+      gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
       justifyContent: 'center',
       alignItems: 'center',
-      gap: '30px',
-      maxWidth: '800px',
+      gap: isMobile ? '20px' : '30px',
+      maxWidth: isMobile ? '90%' : '800px',
       margin: '30px auto',
     }}>
       {/* Years of Experience */}
@@ -2347,7 +2211,7 @@ const StatsCounter = () => {
         onTouchEnd={() => setTimeout(() => setActiveStat(null), 150)}
       >
         <div style={{
-          fontSize: '2.5rem',
+          fontSize: isMobile ? '2rem' : '2.5rem',
           fontWeight: 900,
           color: '#001E50',
           fontFamily: "'Playfair Display', serif",
@@ -2357,7 +2221,7 @@ const StatsCounter = () => {
           {yearsExperience}+
         </div>
         <div style={{
-          fontSize: '14px',
+          fontSize: isMobile ? '12px' : '14px',
           fontWeight: 900,
           color: '#666666',
           letterSpacing: '0.5px',
@@ -2382,7 +2246,7 @@ const StatsCounter = () => {
         onTouchEnd={() => setTimeout(() => setActiveStat(null), 150)}
       >
         <div style={{
-          fontSize: '2.5rem',
+          fontSize: isMobile ? '2rem' : '2.5rem',
           fontWeight: 900,
           color: '#001E50',
           fontFamily: "'Playfair Display', serif",
@@ -2392,7 +2256,7 @@ const StatsCounter = () => {
           {homesCleaned.toLocaleString()}+
         </div>
         <div style={{
-          fontSize: '14px',
+          fontSize: isMobile ? '12px' : '14px',
           fontWeight: 900,
           color: '#666666',
           letterSpacing: '0.5px',
@@ -2417,7 +2281,7 @@ const StatsCounter = () => {
         onTouchEnd={() => setTimeout(() => setActiveStat(null), 150)}
       >
         <div style={{
-          fontSize: '2.5rem',
+          fontSize: isMobile ? '2rem' : '2.5rem',
           fontWeight: 900,
           color: '#001E50',
           fontFamily: "'Playfair Display', serif",
@@ -2427,7 +2291,7 @@ const StatsCounter = () => {
           {satisfactionRate}%
         </div>
         <div style={{
-          fontSize: '14px',
+          fontSize: isMobile ? '12px' : '14px',
           fontWeight: 900,
           color: '#666666',
           letterSpacing: '0.5px',
@@ -2536,7 +2400,10 @@ function FAQSection({
 
   const baseStyles = {
     faqSection: {
-      padding: isMobile ? '60px 20px' : '80px 40px',
+      paddingTop: isMobile ? '60px' : '80px',
+      paddingBottom: isMobile ? '60px' : '80px',
+      paddingLeft: isMobile ? '20px' : '40px',
+      paddingRight: isMobile ? '20px' : '40px',
       background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFF 100%)',
       position: 'relative' as const,
       backgroundColor: backgroundColor,
@@ -2550,14 +2417,14 @@ function FAQSection({
     },
     header: {
       textAlign: 'center' as const,
-      marginBottom: '60px',
+      marginBottom: isMobile ? '40px' : '60px',
     },
     badge: {
       display: 'inline-flex',
       alignItems: 'center',
       gap: '10px',
       background: `rgba(${parseInt(accentColor.slice(1, 3), 16)}, ${parseInt(accentColor.slice(3, 5), 16)}, ${parseInt(accentColor.slice(5, 7), 16)}, 0.1)`,
-      padding: '10px 20px',
+      padding: isMobile ? '8px 16px' : '10px 20px',
       borderRadius: '50px',
       border: `1px solid ${accentColor}33`,
       marginBottom: '20px',
@@ -2569,7 +2436,7 @@ function FAQSection({
       transition: 'all 0.3s ease',
     },
     badgeText: {
-      fontSize: '14px',
+      fontSize: isMobile ? '12px' : '14px',
       fontWeight: 600,
       color: textColor,
       letterSpacing: '1px',
@@ -2581,10 +2448,13 @@ function FAQSection({
       color: textColor,
       lineHeight: 1.2,
       fontFamily: "'Playfair Display', serif",
-      margin: '0 0 20px 0',
+      marginTop: 0,
+      marginRight: 0,
+      marginBottom: '20px',
+      marginLeft: 0,
       maxWidth: '900px',
-      marginLeft: 'auto',
-      marginRight: 'auto',
+     
+      
       transition: 'all 0.3s ease',
       cursor: 'pointer',
     },
@@ -2594,7 +2464,10 @@ function FAQSection({
       color: '#666666',
       lineHeight: 1.6,
       maxWidth: '800px',
-      margin: '0 auto 30px',
+      marginTop: 0,
+      marginRight: 'auto',
+      marginBottom: '30px',
+      marginLeft: 'auto',
       transition: 'all 0.3s ease',
       cursor: 'pointer',
     },
@@ -2617,7 +2490,7 @@ function FAQSection({
       width: '100%',
       background: isOpen ? `${accentColor}0D` : '#FFFFFF',
       border: 'none',
-      padding: '20px',
+      padding: isMobile ? '16px' : '20px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -2650,7 +2523,10 @@ function FAQSection({
       fontWeight: 700,
       color: textColor,
       fontFamily: "'Playfair Display', serif",
-      margin: 0,
+      marginTop: 0,
+      marginRight: 0,
+      marginBottom: 0,
+      marginLeft: 0,
       lineHeight: 1.4,
       transition: 'all 0.3s ease',
     },
@@ -2672,7 +2548,10 @@ function FAQSection({
       background: isOpen ? `${textColor}05` : 'transparent',
     }),
     answerContent: (isOpen: boolean) => ({
-      padding: isOpen ? '0 20px 20px 68px' : '0 20px',
+      paddingTop: isOpen ? (isMobile ? '0' : '0') : (isMobile ? '0' : '0'),
+      paddingRight: isOpen ? (isMobile ? '16px' : '20px') : (isMobile ? '16px' : '20px'),
+      paddingBottom: isOpen ? (isMobile ? '16px' : '20px') : (isMobile ? '0' : '0'),
+      paddingLeft: isOpen ? (isMobile ? '68px' : '68px') : (isMobile ? '16px' : '20px'),
       opacity: isOpen ? 1 : 0,
       transition: 'opacity 0.3s ease 0.2s',
     }),
@@ -2697,17 +2576,20 @@ function FAQSection({
       transition: 'all 0.3s ease',
     },
     answerText: {
-      fontSize: isMobile ? '0.95rem' : '1rem',
+      fontSize: isMobile ? '0.9rem' : '1rem',
       fontWeight: 400,
       color: '#666666',
       lineHeight: 1.6,
-      margin: 0,
+      marginTop: 0,
+      marginRight: 0,
+      marginBottom: 0,
+      marginLeft: 0,
       transition: 'all 0.3s ease',
       cursor: 'pointer',
     },
     ctaContainer: {
       textAlign: 'center'  as const,
-      marginTop: '60px',
+      marginTop: isMobile ? '40px' : '60px',
       padding: isMobile ? '30px 20px' : '40px 20px',
       background: `linear-gradient(135deg, ${textColor}0D 0%, ${accentColor}0D 100%)`,
       borderRadius: '20px',
@@ -2729,7 +2611,10 @@ function FAQSection({
       color: '#666666',
       lineHeight: 1.6,
       maxWidth: '600px',
-      margin: '0 auto 24px',
+      marginTop: 0,
+      marginRight: 'auto',
+      marginBottom: '24px',
+      marginLeft: 'auto',
       transition: 'all 0.3s ease',
     },
     buttonContainer: {
@@ -3213,26 +3098,6 @@ const BodySection = () => {
     }
   ];
 
-  // Stats Data - SIMPLIFIED FOR HORIZONTAL LAYOUT
-  const stats = [
-    {
-      number: '15+',
-      title: 'Years',
-    },
-    {
-      number: '5,000+',
-      title: 'Homes',
-    },
-    {
-      number: '99.8%',
-      title: 'Satisfaction',
-    },
-    {
-      number: '100%',
-      title: 'Insured',
-    }
-  ];
-
   // Cleaning Schedule Plans
   const cleaningPlans = [
     {
@@ -3289,24 +3154,30 @@ const BodySection = () => {
   const baseBodyStyles: any = {
     bodyContainer: {
       backgroundColor: '#FFFFFF',
-      padding: '120px 40px',
+      paddingTop: isMobile ? '60px' : '120px',
+      paddingRight: isMobile ? '20px' : '40px',
+      paddingBottom: isMobile ? '60px' : '120px',
+      paddingLeft: isMobile ? '20px' : '40px',
       fontFamily: "'Playfair Display', serif",
     },
     
     differenceSection: {
       maxWidth: '1400px',
-      margin: '0 auto 120px auto',
+      margin: '0 auto',
+      marginBottom: isMobile ? '80px' : '120px',
       textAlign: 'center',
+      paddingLeft: isMobile ? '20px' : '0',
+      paddingRight: isMobile ? '20px' : '0',
     },
     
     differenceBadge: {
       display: 'inline-flex',
       alignItems: 'center',
-      gap: '12px',
+      gap: isMobile ? '8px' : '12px',
       backgroundColor: 'rgba(255, 215, 0, 0.1)',
-      padding: '16px 32px',
+      padding: isMobile ? '12px 20px' : '16px 32px',
       borderRadius: '50px',
-      marginBottom: '40px',
+      marginBottom: isMobile ? '30px' : '40px',
       border: '2px solid rgba(255, 215, 0, 0.3)',
       backdropFilter: 'blur(10px)',
     },
@@ -3314,11 +3185,11 @@ const BodySection = () => {
     diamondIcon: {
       color: '#FFD700',
       fontWeight: '900',
-      fontSize: '24px',
+      fontSize: isMobile ? '20px' : '24px',
     },
     
     differenceBadgeText: {
-      fontSize: '18px',
+      fontSize: isMobile ? '14px' : '18px',
       fontWeight: '900',
       color: '#001E50',
       letterSpacing: '3px',
@@ -3327,10 +3198,13 @@ const BodySection = () => {
     },
     
     differenceTitle: {
-      fontSize: '4.5rem',
+      fontSize: isMobile ? '3rem' : isTablet ? '4rem' : '4.5rem',
       fontWeight: '900',
       color: '#001E50',
-      margin: '0 0 16px 0',
+      marginTop: 0,
+      marginRight: 0,
+      marginBottom: '16px',
+      marginLeft: 0,
       lineHeight: '1',
       fontFamily: "'Playfair Display', serif",
       letterSpacing: '-1px',
@@ -3338,33 +3212,38 @@ const BodySection = () => {
     },
     
     navySubtitle: {
-      fontSize: '3.5rem',
+      fontSize: isMobile ? '2.5rem' : isTablet ? '3rem' : '3.5rem',
       fontWeight: '900',
       color: '#001E50',
-      margin: '0 0 8px 0',
+      marginTop: 0,
+      marginRight: 0,
+      marginBottom: '8px',
+      marginLeft: 0,
       fontFamily: "'Playfair Display', serif",
       letterSpacing: '-0.5px',
     },
     
     goldSubtitle: {
-      fontSize: '3.5rem',
+      fontSize: isMobile ? '2.5rem' : isTablet ? '3rem' : '3.5rem',
       fontWeight: '900',
       color: '#FFD700',
-      margin: '0 0 48px 0',
+      marginTop: 0,
+      marginRight: 0,
+      marginBottom: '48px',
+      marginLeft: 0,
       fontFamily: "'Playfair Display', serif",
       textShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
       letterSpacing: '-0.5px',
     },
     
-    // FIXED: Use separate margin properties instead of shorthand
     differenceDescription: {
-      fontSize: '1.5rem',
+      fontSize: isMobile ? '1.25rem' : isTablet ? '1.375rem' : '1.5rem',
       color: '#4B5563',
       lineHeight: '1.7',
       maxWidth: '900px',
       marginTop: 0,
       marginRight: 'auto',
-      marginBottom: '80px',
+      marginBottom: isMobile ? '60px' : isTablet ? '80px' : '80px',
       marginLeft: 'auto',
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
@@ -3373,10 +3252,13 @@ const BodySection = () => {
     // UPDATED: Feature card styles without buttons and with number beside theme
     featuresGrid: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(2, 1fr)',
-      gap: '64px',
+      gridTemplateColumns: isMobile ? '1fr' : isTablet ? '1fr' : 'repeat(2, 1fr)',
+      gap: isMobile ? '32px' : isTablet ? '48px' : '64px',
       maxWidth: '1400px',
-      margin: '0 auto 120px auto',
+      margin: '0 auto',
+      marginBottom: isMobile ? '80px' : '120px',
+      paddingLeft: isMobile ? '20px' : '0',
+      paddingRight: isMobile ? '20px' : '0',
     },
     
     featureCard: (active: boolean) => ({
@@ -3393,7 +3275,7 @@ const BodySection = () => {
     
     featureImageContainer: {
       position: 'relative',
-      height: '300px',
+      height: isMobile ? '200px' : isTablet ? '250px' : '300px',
       overflow: 'hidden',
     },
     
@@ -3411,45 +3293,51 @@ const BodySection = () => {
       justifyContent: 'center',
       backgroundColor: '#001E50',
       color: '#FFFFFF',
-      width: '60px',
-      height: '60px',
+      width: isMobile ? '50px' : '60px',
+      height: isMobile ? '50px' : '60px',
       borderRadius: '50%',
-      fontSize: '1.5rem',
+      fontSize: isMobile ? '1.25rem' : '1.5rem',
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
       boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
-      marginRight: '20px',
+      marginRight: isMobile ? '12px' : '20px',
       flexShrink: 0,
     },
     
     featureContent: {
-      padding: '48px 40px',
+      paddingTop: isMobile ? '24px' : '48px',
+      paddingRight: isMobile ? '20px' : '40px',
+      paddingBottom: isMobile ? '24px' : '48px',
+      paddingLeft: isMobile ? '20px' : '40px',
     },
     
     // UPDATED: Title container with number beside it
     featureTitleContainer: {
       display: 'flex',
       alignItems: 'center',
-      marginBottom: '24px',
+      marginBottom: isMobile ? '16px' : '24px',
     },
     
     featureTitle: {
-      fontSize: '2.25rem',
+      fontSize: isMobile ? '1.75rem' : isTablet ? '2rem' : '2.25rem',
       fontWeight: '900',
       color: '#001E50',
-      margin: 0,
+      marginTop: 0,
+      marginRight: 0,
+      marginBottom: 0,
+      marginLeft: 0,
       lineHeight: '1.2',
       fontFamily: "'Playfair Display', serif",
       letterSpacing: '-0.25px',
     },
     
     featureDescription: {
-      fontSize: '1.25rem',
+      fontSize: isMobile ? '1.125rem' : isTablet ? '1.25rem' : '1.25rem',
       color: '#4B5563',
       lineHeight: '1.8',
       marginTop: 0,
       marginRight: 0,
-      marginBottom: '32px',
+      marginBottom: isMobile ? '24px' : '32px',
       marginLeft: 0,
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
@@ -3458,10 +3346,10 @@ const BodySection = () => {
     featureList: {
       display: 'flex',
       flexDirection: 'column',
-      gap: '20px',
+      gap: isMobile ? '12px' : '20px',
       marginTop: 0,
       marginRight: 0,
-      marginBottom: '40px',
+      marginBottom: isMobile ? '30px' : '40px',
       marginLeft: 0,
     },
     
@@ -3474,13 +3362,13 @@ const BodySection = () => {
     checkIcon: {
       color: '#FFD700',
       fontWeight: '900',
-      fontSize: '24px',
+      fontSize: isMobile ? '20px' : '24px',
       flexShrink: 0,
       marginTop: '2px',
     },
     
     featureListItemText: {
-      fontSize: '1.125rem',
+      fontSize: isMobile ? '1rem' : '1.125rem',
       color: '#374151',
       lineHeight: '1.6',
       fontWeight: '900',
@@ -3489,12 +3377,15 @@ const BodySection = () => {
 
     transformationsSection: {
       maxWidth: '1400px',
-      margin: '0 auto 120px auto',
+      margin: '0 auto',
+      marginBottom: isMobile ? '80px' : '120px',
       textAlign: 'center',
+      paddingLeft: isMobile ? '20px' : '0',
+      paddingRight: isMobile ? '20px' : '0',
     },
     
     transformationsHeader: {
-      marginBottom: '60px',
+      marginBottom: isMobile ? '40px' : '60px',
     },
     
     transformationsTitleContainer: {
@@ -3505,7 +3396,7 @@ const BodySection = () => {
     },
     
     navyTitle: {
-      fontSize: '3.5rem',
+      fontSize: isMobile ? '2.5rem' : isTablet ? '3rem' : '3.5rem',
       fontWeight: '900',
       color: '#001E50',
       marginTop: 0,
@@ -3517,7 +3408,7 @@ const BodySection = () => {
     },
     
     goldTitle: {
-      fontSize: '3.5rem',
+      fontSize: isMobile ? '2.5rem' : isTablet ? '3rem' : '3.5rem',
       fontWeight: '900',
       color: '#FFD700',
       marginTop: 0,
@@ -3530,7 +3421,7 @@ const BodySection = () => {
     },
     
     transformationsSubtitle: {
-      fontSize: '1.5rem',
+      fontSize: isMobile ? '1.25rem' : '1.5rem',
       color: '#4B5563',
       lineHeight: '1.6',
       maxWidth: '800px',
@@ -3545,7 +3436,7 @@ const BodySection = () => {
     beforeAfterContainer: {
       display: 'flex',
       flexDirection: 'column',
-      gap: '40px',
+      gap: isMobile ? '24px' : '40px',
       maxWidth: '1200px',
       margin: '0 auto',
     },
@@ -3563,30 +3454,36 @@ const BodySection = () => {
     }),
     
     transformationTitle: {
-      fontSize: '2.25rem',
+      fontSize: isMobile ? '1.75rem' : '2.25rem',
       fontWeight: '900',
       color: '#001E50',
       marginTop: 0,
       marginRight: 0,
-      marginBottom: '30px',
+      marginBottom: isMobile ? '20px' : '30px',
       marginLeft: 0,
       textAlign: 'center',
       fontFamily: "'Playfair Display', serif",
-      padding: '40px 40px 0 40px',
+      paddingTop: isMobile ? '30px' : '40px',
+      paddingRight: isMobile ? '20px' : '40px',
+      paddingBottom: 0,
+      paddingLeft: isMobile ? '20px' : '40px',
     },
     
     beforeAfterGrid: {
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: '30px',
-      padding: '0 40px 40px 40px',
+      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+      gap: isMobile ? '20px' : '30px',
+      paddingTop: 0,
+      paddingRight: isMobile ? '20px' : '40px',
+      paddingBottom: isMobile ? '30px' : '40px',
+      paddingLeft: isMobile ? '20px' : '40px',
     },
     
     imageContainer: {
       position: 'relative',
       borderRadius: '16px',
       overflow: 'hidden',
-      height: '400px',
+      height: isMobile ? '250px' : isTablet ? '300px' : '400px',
       boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
     },
     
@@ -3596,9 +3493,12 @@ const BodySection = () => {
       left: '20px',
       backgroundColor: '#001E50',
       color: '#FFFFFF',
-      padding: '8px 20px',
+      paddingTop: '8px',
+      paddingRight: '20px',
+      paddingBottom: '8px',
+      paddingLeft: '20px',
       borderRadius: '30px',
-      fontSize: '1rem',
+      fontSize: isMobile ? '0.9rem' : '1rem',
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
       zIndex: 2,
@@ -3620,28 +3520,31 @@ const BodySection = () => {
     },
     
     transformationDescription: {
-      fontSize: '1.25rem',
+      fontSize: isMobile ? '1.125rem' : '1.25rem',
       color: '#4B5563',
       lineHeight: '1.6',
-      marginTop: '30px',
-      marginRight: '40px',
-      marginBottom: '40px',
-      marginLeft: '40px',
+      marginTop: isMobile ? '20px' : '30px',
+      marginRight: isMobile ? '20px' : '40px',
+      marginBottom: isMobile ? '30px' : '40px',
+      marginLeft: isMobile ? '20px' : '40px',
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
       textAlign: 'center',
       borderTop: '2px solid #E5E7EB',
-      paddingTop: '30px',
+      paddingTop: isMobile ? '20px' : '30px',
     },
 
     videoTestimonialsSection: {
       maxWidth: '1400px',
-      margin: '0 auto 120px auto',
+      margin: '0 auto',
+      marginBottom: isMobile ? '80px' : '120px',
       textAlign: 'center',
+      paddingLeft: isMobile ? '20px' : '0',
+      paddingRight: isMobile ? '20px' : '0',
     },
     
     videoTestimonialsHeader: {
-      marginBottom: '60px',
+      marginBottom: isMobile ? '40px' : '60px',
     },
     
     videoTitleContainer: {
@@ -3652,7 +3555,7 @@ const BodySection = () => {
     },
     
     videoNavyTitle: {
-      fontSize: '3.5rem',
+      fontSize: isMobile ? '2.5rem' : isTablet ? '3rem' : '3.5rem',
       fontWeight: '900',
       color: '#001E50',
       marginTop: 0,
@@ -3664,7 +3567,7 @@ const BodySection = () => {
     },
     
     videoGoldTitle: {
-      fontSize: '3.5rem',
+      fontSize: isMobile ? '2.5rem' : isTablet ? '3rem' : '3.5rem',
       fontWeight: '900',
       color: '#FFD700',
       marginTop: 0,
@@ -3677,7 +3580,7 @@ const BodySection = () => {
     },
     
     videoSubtitle: {
-      fontSize: '1.5rem',
+      fontSize: isMobile ? '1.25rem' : '1.5rem',
       color: '#4B5563',
       lineHeight: '1.6',
       maxWidth: '800px',
@@ -3691,10 +3594,11 @@ const BodySection = () => {
     
     videoGrid: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(3, 1fr)',
-      gap: '32px',
+      gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
+      gap: isMobile ? '20px' : isTablet ? '24px' : '32px',
       maxWidth: '1200px',
-      margin: '0 auto 80px auto',
+      margin: '0 auto',
+      marginBottom: isMobile ? '60px' : '80px',
     },
     
     moreVideosButton: (active: boolean) => ({
@@ -3704,9 +3608,12 @@ const BodySection = () => {
       backgroundColor: active ? '#001E50' : 'transparent',
       color: active ? '#FFFFFF' : '#001E50',
       border: '2px solid #001E50',
-      padding: '20px 40px',
+      paddingTop: isMobile ? '16px' : '20px',
+      paddingRight: isMobile ? '24px' : '40px',
+      paddingBottom: isMobile ? '16px' : '20px',
+      paddingLeft: isMobile ? '24px' : '40px',
       borderRadius: '50px',
-      fontSize: '1.125rem',
+      fontSize: isMobile ? '1rem' : '1.125rem',
       fontWeight: '900',
       cursor: 'pointer',
       transition: 'all 0.3s ease',
@@ -3718,16 +3625,19 @@ const BodySection = () => {
     
     reviewsSection: {
       maxWidth: '1400px',
-      margin: '0 auto 120px auto',
+      margin: '0 auto',
+      marginBottom: isMobile ? '80px' : '120px',
       textAlign: 'center',
+      paddingLeft: isMobile ? '20px' : '0',
+      paddingRight: isMobile ? '20px' : '0',
     },
     
     reviewsHeader: {
-      marginBottom: '60px',
+      marginBottom: isMobile ? '40px' : '60px',
     },
     
     reviewsTitle: {
-      fontSize: '3.5rem',
+      fontSize: isMobile ? '2.5rem' : isTablet ? '3rem' : '3.5rem',
       fontWeight: '900',
       color: '#001E50',
       marginTop: 0,
@@ -3739,7 +3649,7 @@ const BodySection = () => {
     },
     
     reviewsSubtitle: {
-      fontSize: '1.5rem',
+      fontSize: isMobile ? '1.25rem' : '1.5rem',
       color: '#4B5563',
       lineHeight: '1.6',
       maxWidth: '800px',
@@ -3753,8 +3663,8 @@ const BodySection = () => {
     
     reviewsGrid: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(2, 1fr)',
-      gap: '32px',
+      gridTemplateColumns: isMobile ? '1fr' : isTablet ? '1fr' : 'repeat(2, 1fr)',
+      gap: isMobile ? '20px' : isTablet ? '24px' : '32px',
       maxWidth: '1200px',
       margin: '0 auto',
     },
@@ -3762,7 +3672,10 @@ const BodySection = () => {
     reviewCard: (active: boolean) => ({
       backgroundColor: active ? '#F9FAFB' : '#FFFFFF',
       borderRadius: '24px',
-      padding: '40px 32px',
+      paddingTop: isMobile ? '30px' : '40px',
+      paddingRight: isMobile ? '20px' : '32px',
+      paddingBottom: isMobile ? '30px' : '40px',
+      paddingLeft: isMobile ? '20px' : '32px',
       textAlign: 'left',
       border: active ? '2px solid #FFD700' : '2px solid rgba(0, 30, 80, 0.1)',
       transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -3775,13 +3688,13 @@ const BodySection = () => {
     reviewHeader: {
       display: 'flex',
       alignItems: 'center',
-      gap: '20px',
+      gap: isMobile ? '16px' : '20px',
       marginBottom: '24px',
     },
     
     reviewAvatar: {
-      width: '80px',
-      height: '80px',
+      width: isMobile ? '60px' : '80px',
+      height: isMobile ? '60px' : '80px',
       borderRadius: '50%',
       objectFit: 'cover',
       border: '3px solid #FFD700',
@@ -3792,7 +3705,7 @@ const BodySection = () => {
     },
     
     reviewerName: {
-      fontSize: '1.5rem',
+      fontSize: isMobile ? '1.25rem' : '1.5rem',
       fontWeight: '900',
       color: '#001E50',
       marginTop: 0,
@@ -3803,7 +3716,7 @@ const BodySection = () => {
     },
     
     reviewerDetails: {
-      fontSize: '1rem',
+      fontSize: isMobile ? '0.9rem' : '1rem',
       color: '#6B7280',
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
@@ -3817,12 +3730,12 @@ const BodySection = () => {
     
     starIcon: {
       color: '#FFD700',
-      fontSize: '1.25rem',
+      fontSize: isMobile ? '1rem' : '1.25rem',
       fontWeight: '900',
     },
     
     reviewContent: {
-      fontSize: '1.125rem',
+      fontSize: isMobile ? '1rem' : '1.125rem',
       color: '#4B5563',
       lineHeight: '1.7',
       marginTop: 0,
@@ -3837,28 +3750,34 @@ const BodySection = () => {
     // New Flexible Solutions Section Styles
     flexibleSolutionsSection: {
       maxWidth: '1400px',
-      margin: '0 auto 120px auto',
+      margin: '0 auto',
+      marginBottom: isMobile ? '80px' : '120px',
       textAlign: 'center',
+      paddingLeft: isMobile ? '20px' : '0',
+      paddingRight: isMobile ? '20px' : '0',
     },
     
     flexibleSolutionsHeader: {
-      marginBottom: '60px',
+      marginBottom: isMobile ? '40px' : '60px',
     },
     
     flexibleSolutionsBadge: {
       display: 'inline-flex',
       alignItems: 'center',
-      gap: '12px',
+      gap: isMobile ? '8px' : '12px',
       backgroundColor: 'rgba(255, 215, 0, 0.1)',
-      padding: '16px 32px',
+      paddingTop: isMobile ? '12px' : '16px',
+      paddingRight: isMobile ? '20px' : '32px',
+      paddingBottom: isMobile ? '12px' : '16px',
+      paddingLeft: isMobile ? '20px' : '32px',
       borderRadius: '50px',
-      marginBottom: '30px',
+      marginBottom: isMobile ? '20px' : '30px',
       border: '2px solid rgba(255, 215, 0, 0.3)',
       backdropFilter: 'blur(10px)',
     },
     
     flexibleSolutionsBadgeText: {
-      fontSize: '18px',
+      fontSize: isMobile ? '14px' : '18px',
       fontWeight: '900',
       color: '#001E50',
       letterSpacing: '3px',
@@ -3867,7 +3786,7 @@ const BodySection = () => {
     },
     
     flexibleSolutionsTitle: {
-      fontSize: '4.5rem',
+      fontSize: isMobile ? '3rem' : isTablet ? '4rem' : '4.5rem',
       fontWeight: '900',
       color: '#001E50',
       marginTop: 0,
@@ -3881,7 +3800,7 @@ const BodySection = () => {
     },
     
     flexibleSolutionsSubtitle: {
-      fontSize: '2.5rem',
+      fontSize: isMobile ? '2rem' : isTablet ? '2.5rem' : '2.5rem',
       fontWeight: '900',
       color: '#001E50',
       marginTop: 0,
@@ -3892,15 +3811,14 @@ const BodySection = () => {
       lineHeight: '1.2',
     },
     
-    // FIXED: Use separate margin properties
     flexibleSolutionsDescription: {
-      fontSize: '1.5rem',
+      fontSize: isMobile ? '1.25rem' : isTablet ? '1.375rem' : '1.5rem',
       color: '#4B5563',
       lineHeight: '1.7',
       maxWidth: '900px',
       marginTop: 0,
       marginRight: 'auto',
-      marginBottom: '60px',
+      marginBottom: isMobile ? '40px' : '60px',
       marginLeft: 'auto',
       fontWeight: '900',
       fontFamily: "'Playfair Display', serif",
@@ -3908,10 +3826,11 @@ const BodySection = () => {
     
     cleaningPlansGrid: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(3, 1fr)',
-      gap: '32px',
+      gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
+      gap: isMobile ? '32px' : isTablet ? '24px' : '32px',
       maxWidth: '1400px',
-      margin: '0 auto 80px auto',
+      margin: '0 auto',
+      marginBottom: isMobile ? '60px' : '80px',
     },
     
     cleaningPlanCard: (active: boolean, color: string) => ({
@@ -3930,7 +3849,10 @@ const BodySection = () => {
     
     planHeader: (color: string) => ({
       backgroundColor: color,
-      padding: '40px 32px',
+      paddingTop: isMobile ? '30px' : '40px',
+      paddingRight: isMobile ? '24px' : '32px',
+      paddingBottom: isMobile ? '30px' : '40px',
+      paddingLeft: isMobile ? '24px' : '32px',
       textAlign: 'center',
       color: color === '#FFD700' ? '#001E50' : '#FFFFFF',
     }),
@@ -3938,7 +3860,10 @@ const BodySection = () => {
     planBadge: {
       display: 'inline-block',
       backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      padding: '8px 20px',
+      paddingTop: '8px',
+      paddingRight: '20px',
+      paddingBottom: '8px',
+      paddingLeft: '20px',
       borderRadius: '30px',
       fontSize: '14px',
       fontWeight: '900',
@@ -3949,7 +3874,7 @@ const BodySection = () => {
     },
     
     planTitle: {
-      fontSize: '2.5rem',
+      fontSize: isMobile ? '2rem' : '2.5rem',
       fontWeight: '900',
       marginTop: 0,
       marginRight: 0,
@@ -3960,7 +3885,7 @@ const BodySection = () => {
     },
     
     planFrequency: {
-      fontSize: '1.5rem',
+      fontSize: isMobile ? '1.25rem' : '1.5rem',
       fontWeight: '900',
       marginTop: 0,
       marginRight: 0,
@@ -3971,7 +3896,7 @@ const BodySection = () => {
     },
     
     planDescription: {
-      fontSize: '1.25rem',
+      fontSize: isMobile ? '1.125rem' : '1.25rem',
       fontWeight: '900',
       marginTop: 0,
       marginRight: 0,
@@ -3981,14 +3906,17 @@ const BodySection = () => {
     },
     
     planContent: {
-      padding: '40px 32px',
+      paddingTop: isMobile ? '30px' : '40px',
+      paddingRight: isMobile ? '24px' : '32px',
+      paddingBottom: isMobile ? '30px' : '40px',
+      paddingLeft: isMobile ? '24px' : '32px',
       flex: 1,
       display: 'flex',
       flexDirection: 'column',
     },
     
     planDetails: {
-      fontSize: '1.125rem',
+      fontSize: isMobile ? '1rem' : '1.125rem',
       color: '#4B5563',
       lineHeight: '1.7',
       marginTop: 0,
@@ -4003,8 +3931,8 @@ const BodySection = () => {
     planFeatures: {
       display: 'flex',
       flexDirection: 'column',
-      gap: '16px',
-      marginBottom: '40px',
+      gap: isMobile ? '12px' : '16px',
+      marginBottom: isMobile ? '30px' : '40px',
     },
     
     planFeature: {
@@ -4022,7 +3950,7 @@ const BodySection = () => {
     },
     
     planFeatureText: {
-      fontSize: '1.125rem',
+      fontSize: isMobile ? '1rem' : '1.125rem',
       color: '#374151',
       lineHeight: '1.5',
       fontWeight: '900',
@@ -4038,9 +3966,12 @@ const BodySection = () => {
       backgroundColor: active ? color : 'transparent',
       color: active ? (color === '#FFD700' ? '#001E50' : '#FFFFFF') : color,
       border: `3px solid ${color}`,
-      padding: '20px 32px',
+      paddingTop: isMobile ? '16px' : '20px',
+      paddingRight: isMobile ? '24px' : '32px',
+      paddingBottom: isMobile ? '16px' : '20px',
+      paddingLeft: isMobile ? '24px' : '32px',
       borderRadius: '50px',
-      fontSize: '1.125rem',
+      fontSize: isMobile ? '1rem' : '1.125rem',
       fontWeight: '900',
       cursor: 'pointer',
       transition: 'all 0.3s ease',
@@ -4048,12 +3979,16 @@ const BodySection = () => {
       fontFamily: "'Playfair Display', serif",
       transform: active ? 'translateY(-3px)' : 'translateY(0)',
       boxShadow: active ? '0 15px 30px rgba(0, 0, 0, 0.15)' : 'none',
+      width: '100%',
     }),
     
     consultationSection: {
       backgroundColor: 'rgba(0, 30, 80, 0.03)',
       borderRadius: '24px',
-      padding: '60px 40px',
+      paddingTop: isMobile ? '40px' : '60px',
+      paddingRight: isMobile ? '24px' : '40px',
+      paddingBottom: isMobile ? '40px' : '60px',
+      paddingLeft: isMobile ? '24px' : '40px',
       textAlign: 'center',
       border: '2px solid rgba(255, 215, 0, 0.2)',
       maxWidth: '1000px',
@@ -4061,7 +3996,7 @@ const BodySection = () => {
     },
     
     consultationTitle: {
-      fontSize: '3rem',
+      fontSize: isMobile ? '2rem' : isTablet ? '2.5rem' : '3rem',
       fontWeight: '900',
       color: '#001E50',
       marginTop: 0,
@@ -4072,9 +4007,8 @@ const BodySection = () => {
       lineHeight: '1.2',
     },
     
-    // FIXED: Use separate margin properties
     consultationDescription: {
-      fontSize: '1.5rem',
+      fontSize: isMobile ? '1.25rem' : isTablet ? '1.375rem' : '1.5rem',
       color: '#4B5563',
       lineHeight: '1.7',
       marginTop: 0,
@@ -4094,9 +4028,12 @@ const BodySection = () => {
       backgroundColor: active ? '#FFD700' : '#001E50',
       color: active ? '#001E50' : '#FFFFFF',
       border: 'none',
-      padding: '20px 48px',
+      paddingTop: isMobile ? '16px' : '20px',
+      paddingRight: isMobile ? '32px' : '48px',
+      paddingBottom: isMobile ? '16px' : '20px',
+      paddingLeft: isMobile ? '32px' : '48px',
       borderRadius: '50px',
-      fontSize: '1.25rem',
+      fontSize: isMobile ? '1.125rem' : '1.25rem',
       fontWeight: '900',
       cursor: 'pointer',
       transition: 'all 0.3s ease',
@@ -4116,9 +4053,12 @@ const BodySection = () => {
       backgroundColor: active ? '#FFD700' : '#001E50',
       color: active ? '#001E50' : '#FFFFFF',
       border: 'none',
-      padding: '20px 40px',
+      paddingTop: isMobile ? '16px' : '20px',
+      paddingRight: isMobile ? '24px' : '40px',
+      paddingBottom: isMobile ? '16px' : '20px',
+      paddingLeft: isMobile ? '24px' : '40px',
       borderRadius: '50px',
-      fontSize: '1.125rem',
+      fontSize: isMobile ? '1rem' : '1.125rem',
       fontWeight: '900',
       cursor: 'pointer',
       transition: 'all 0.3s ease',
@@ -4132,319 +4072,25 @@ const BodySection = () => {
     }),
   };
 
-  // Get responsive styles
-  const getResponsiveStyles = () => {
-    const responsive = { ...baseBodyStyles };
-    
-    if (isTablet) {
-      responsive.bodyContainer = {
-        ...responsive.bodyContainer,
-        padding: '80px 32px',
-      };
-      responsive.differenceTitle = {
-        ...responsive.differenceTitle,
-        fontSize: '4rem',
-      };
-      responsive.navySubtitle = {
-        ...responsive.navySubtitle,
-        fontSize: '3rem',
-      };
-      responsive.goldSubtitle = {
-        ...responsive.goldSubtitle,
-        fontSize: '3rem',
-      };
-      responsive.flexibleSolutionsTitle = {
-        ...responsive.flexibleSolutionsTitle,
-        fontSize: '4rem',
-      };
-      responsive.flexibleSolutionsSubtitle = {
-        ...responsive.flexibleSolutionsSubtitle,
-        fontSize: '2.5rem',
-      };
-      responsive.featuresGrid = {
-        ...responsive.featuresGrid,
-        gridTemplateColumns: '1fr',
-        gap: '48px',
-      };
-      responsive.cleaningPlansGrid = {
-        ...responsive.cleaningPlansGrid,
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '24px',
-      };
-      responsive.navyTitle = {
-        ...responsive.navyTitle,
-        fontSize: '3rem',
-      };
-      responsive.goldTitle = {
-        ...responsive.goldTitle,
-        fontSize: '3rem',
-      };
-      responsive.videoNavyTitle = {
-        ...responsive.videoNavyTitle,
-        fontSize: '3rem',
-      };
-      responsive.videoGoldTitle = {
-        ...responsive.videoGoldTitle,
-        fontSize: '3rem',
-      };
-      responsive.transformationsTitle = {
-        ...responsive.transformationsTitle,
-        fontSize: '3rem',
-      };
-      responsive.reviewsTitle = {
-        ...responsive.reviewsTitle,
-        fontSize: '3rem',
-      };
-      responsive.consultationTitle = {
-        ...responsive.consultationTitle,
-        fontSize: '2.5rem',
-      };
-      responsive.beforeAfterGrid = {
-        ...responsive.beforeAfterGrid,
-        gridTemplateColumns: '1fr',
-        gap: '24px',
-      };
-      responsive.imageContainer = {
-        ...responsive.imageContainer,
-        height: '300px',
-      };
-      responsive.videoGrid = {
-        ...responsive.videoGrid,
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '24px',
-      };
-      responsive.reviewsGrid = {
-        ...responsive.reviewsGrid,
-        gridTemplateColumns: '1fr',
-        gap: '24px',
-      };
-      responsive.featureImageContainer = {
-        ...responsive.featureImageContainer,
-        height: '250px',
-      };
-      responsive.featureContent = {
-        ...responsive.featureContent,
-        padding: '32px 24px',
-      };
-      responsive.planTitle = {
-        ...responsive.planTitle,
-        fontSize: '2rem',
-      };
-      // FIXED: Use separate margin properties
-      responsive.differenceDescription = {
-        ...responsive.differenceDescription,
-        fontSize: '1.375rem',
-        marginBottom: '80px',
-      };
-      responsive.flexibleSolutionsDescription = {
-        ...responsive.flexibleSolutionsDescription,
-        fontSize: '1.375rem',
-        marginBottom: '60px',
-      };
-      responsive.consultationDescription = {
-        ...responsive.consultationDescription,
-        fontSize: '1.375rem',
-        marginBottom: '40px',
-      };
-    } else if (isMobile) {
-      responsive.bodyContainer = {
-        ...responsive.bodyContainer,
-        padding: '60px 24px',
-      };
-      responsive.differenceSection = {
-        ...responsive.differenceSection,
-        marginBottom: '80px',
-      };
-      responsive.differenceTitle = {
-        ...responsive.differenceTitle,
-        fontSize: '3rem',
-      };
-      responsive.navySubtitle = {
-        ...responsive.navySubtitle,
-        fontSize: '2.5rem',
-      };
-      responsive.goldSubtitle = {
-        ...responsive.goldSubtitle,
-        fontSize: '2.5rem',
-      };
-      responsive.flexibleSolutionsTitle = {
-        ...responsive.flexibleSolutionsTitle,
-        fontSize: '3rem',
-      };
-      responsive.flexibleSolutionsSubtitle = {
-        ...responsive.flexibleSolutionsSubtitle,
-        fontSize: '2rem',
-      };
-      responsive.consultationTitle = {
-        ...responsive.consultationTitle,
-        fontSize: '2rem',
-      };
-      // FIXED: Use separate margin properties
-      responsive.differenceDescription = {
-        ...responsive.differenceDescription,
-        fontSize: '1.25rem',
-        marginBottom: '60px',
-      };
-      responsive.flexibleSolutionsDescription = {
-        ...responsive.flexibleSolutionsDescription,
-        fontSize: '1.25rem',
-        marginBottom: '40px',
-      };
-      responsive.consultationDescription = {
-        ...responsive.consultationDescription,
-        fontSize: '1.25rem',
-        marginBottom: '40px',
-      };
-      responsive.featuresGrid = {
-        ...responsive.featuresGrid,
-        gridTemplateColumns: '1fr',
-        gap: '32px',
-      };
-      responsive.cleaningPlansGrid = {
-        ...responsive.cleaningPlansGrid,
-        gridTemplateColumns: '1fr',
-        gap: '32px',
-      };
-      responsive.navyTitle = {
-        ...responsive.navyTitle,
-        fontSize: '2.5rem',
-      };
-      responsive.goldTitle = {
-        ...responsive.goldTitle,
-        fontSize: '2.5rem',
-      };
-      responsive.videoNavyTitle = {
-        ...responsive.videoNavyTitle,
-        fontSize: '2.5rem',
-      };
-      responsive.videoGoldTitle = {
-        ...responsive.videoGoldTitle,
-        fontSize: '2.5rem',
-      };
-      responsive.transformationsSubtitle = {
-        ...responsive.transformationsSubtitle,
-        fontSize: '1.25rem',
-      };
-      responsive.videoSubtitle = {
-        ...responsive.videoSubtitle,
-        fontSize: '1.25rem',
-      };
-      responsive.reviewsTitle = {
-        ...responsive.reviewsTitle,
-        fontSize: '2.5rem',
-      };
-      responsive.reviewsSubtitle = {
-        ...responsive.reviewsSubtitle,
-        fontSize: '1.25rem',
-      };
-      responsive.imageContainer = {
-        ...responsive.imageContainer,
-        height: '250px',
-      };
-      responsive.transformationTitle = {
-        ...responsive.transformationTitle,
-        fontSize: '1.75rem',
-        padding: '30px 20px 0 20px',
-      };
-      responsive.beforeAfterGrid = {
-        ...responsive.beforeAfterGrid,
-        gridTemplateColumns: '1fr',
-        gap: '20px',
-        padding: '0 20px 30px 20px',
-      };
-      responsive.transformationDescription = {
-        ...responsive.transformationDescription,
-        fontSize: '1.125rem',
-        marginTop: '20px',
-        marginRight: '20px',
-        marginBottom: '30px',
-        marginLeft: '20px',
-        paddingTop: '20px',
-      };
-      responsive.videoGrid = {
-        ...responsive.videoGrid,
-        gridTemplateColumns: '1fr',
-        gap: '20px',
-      };
-      responsive.reviewsGrid = {
-        ...responsive.reviewsGrid,
-        gridTemplateColumns: '1fr',
-        gap: '20px',
-      };
-      responsive.reviewCard = (active: boolean) => ({
-        ...baseBodyStyles.reviewCard(active),
-        padding: '30px 20px',
-      });
-      responsive.featureImageContainer = {
-        ...responsive.featureImageContainer,
-        height: '200px',
-      };
-      responsive.featureContent = {
-        ...responsive.featureContent,
-        padding: '24px 20px',
-      };
-      responsive.featureTitle = {
-        ...responsive.featureTitle,
-        fontSize: '1.75rem',
-      };
-      responsive.featureDescription = {
-        ...responsive.featureDescription,
-        fontSize: '1.125rem',
-      };
-      responsive.planHeader = (color: string) => ({
-        ...baseBodyStyles.planHeader(color),
-        padding: '30px 24px',
-      });
-      responsive.planContent = {
-        ...responsive.planContent,
-        padding: '30px 24px',
-      };
-      responsive.planTitle = {
-        ...responsive.planTitle,
-        fontSize: '2rem',
-      };
-      responsive.planFrequency = {
-        ...responsive.planFrequency,
-        fontSize: '1.25rem',
-      };
-      responsive.planDescription = {
-        ...responsive.planDescription,
-        fontSize: '1.125rem',
-      };
-      responsive.planDetails = {
-        ...responsive.planDetails,
-        fontSize: '1rem',
-      };
-      responsive.consultationSection = {
-        ...responsive.consultationSection,
-        padding: '40px 24px',
-      };
-    }
-    
-    return responsive;
-  };
-
-  const responsiveStyles = getResponsiveStyles();
-
   return (
-    <section style={responsiveStyles.bodyContainer}>
+    <section style={baseBodyStyles.bodyContainer}>
       {/* The BraBos Difference Section */}
-      <div style={responsiveStyles.differenceSection}>
+      <div style={baseBodyStyles.differenceSection}>
         <div style={baseBodyStyles.differenceBadge}>
           <span style={baseBodyStyles.diamondIcon}>✦</span>
           <span style={baseBodyStyles.differenceBadgeText}>The BraBos Difference</span>
         </div>
         
         <div>
-          <h2 style={responsiveStyles.navySubtitle}>
+          <h2 style={baseBodyStyles.navySubtitle}>
             What You Can Expect from BraBos
           </h2>
-          <h3 style={responsiveStyles.goldSubtitle}>
+          <h3 style={baseBodyStyles.goldSubtitle}>
             The Top-Rated Cleaning Services in Boston
           </h3>
         </div>
         
-        <p style={responsiveStyles.differenceDescription}>
+        <p style={baseBodyStyles.differenceDescription}>
           While our competitors clean, we transform. Every BraBos service is a meticulous 
           journey from ordinary to extraordinary, where we don't just meet expectations—we 
           shatter them. This isn't just cleaning; it's an elevated experience designed for 
@@ -4456,11 +4102,11 @@ const BodySection = () => {
       </div>
 
       {/* UPDATED: Features Grid Section without buttons and with number beside theme */}
-      <div style={responsiveStyles.featuresGrid}>
+      <div style={baseBodyStyles.featuresGrid}>
         {features.map((feature, index) => (
           <div 
             key={index}
-            style={responsiveStyles.featureCard(activeFeatureCard === index)}
+            style={baseBodyStyles.featureCard(activeFeatureCard === index)}
             onMouseEnter={() => setActiveFeatureCard(index)}
             onMouseLeave={() => setActiveFeatureCard(null)}
             onTouchStart={() => handleTouchStart(setActiveFeatureCard, index)}
@@ -4510,17 +4156,17 @@ const BodySection = () => {
       </div>
 
       {/* Transformations Section - UPDATED: Now only 2 before/afters */}
-      <div style={responsiveStyles.transformationsSection}>
+      <div style={baseBodyStyles.transformationsSection}>
         <div style={baseBodyStyles.transformationsHeader}>
           <div style={baseBodyStyles.transformationsTitleContainer}>
-            <h2 style={responsiveStyles.navyTitle}>
+            <h2 style={baseBodyStyles.navyTitle}>
               See the BraBos Difference:
             </h2>
-            <h2 style={responsiveStyles.goldTitle}>
+            <h2 style={baseBodyStyles.goldTitle}>
               Before & After
             </h2>
           </div>
-          <p style={responsiveStyles.transformationsSubtitle}>
+          <p style={baseBodyStyles.transformationsSubtitle}>
             See how we turn neglected spaces into pristine sanctuaries with our professional luxury cleaning.
           </p>
         </div>
@@ -4529,17 +4175,17 @@ const BodySection = () => {
           {transformations.map((transformation, index) => (
             <div 
               key={transformation.id}
-              style={responsiveStyles.transformationCard(activeBeforeAfter === index)}
+              style={baseBodyStyles.transformationCard(activeBeforeAfter === index)}
               onMouseEnter={() => setActiveBeforeAfter(index)}
               onMouseLeave={() => setActiveBeforeAfter(null)}
               onTouchStart={() => handleTouchStart(setActiveBeforeAfter, index)}
               onTouchEnd={() => handleTouchEnd(setActiveBeforeAfter, null)}
             >
-              <h3 style={responsiveStyles.transformationTitle}>
+              <h3 style={baseBodyStyles.transformationTitle}>
                 {transformation.title}
               </h3>
               
-              <div style={responsiveStyles.beforeAfterGrid}>
+              <div style={baseBodyStyles.beforeAfterGrid}>
                 <div style={baseBodyStyles.imageContainer}>
                   <div style={{...baseBodyStyles.imageLabel, ...baseBodyStyles.beforeLabel}}>
                     BEFORE
@@ -4569,7 +4215,7 @@ const BodySection = () => {
                 </div>
               </div>
               
-              <p style={responsiveStyles.transformationDescription}>
+              <p style={baseBodyStyles.transformationDescription}>
                 {transformation.description}
               </p>
             </div>
@@ -4610,22 +4256,22 @@ const BodySection = () => {
       </div>
 
       {/* Video Testimonials Section */}
-      <div style={responsiveStyles.videoTestimonialsSection}>
+      <div style={baseBodyStyles.videoTestimonialsSection}>
         <div style={baseBodyStyles.videoTestimonialsHeader}>
           <div style={baseBodyStyles.videoTitleContainer}>
-            <h2 style={responsiveStyles.videoNavyTitle}>
+            <h2 style={baseBodyStyles.videoNavyTitle}>
               Video Testimonials
             </h2>
-            <h2 style={responsiveStyles.videoGoldTitle}>
+            <h2 style={baseBodyStyles.videoGoldTitle}>
               From Our Bostonian Clients
             </h2>
           </div>
-          <p style={responsiveStyles.videoSubtitle}>
+          <p style={baseBodyStyles.videoSubtitle}>
             Hear directly from clients who have experienced the BraBos transformation
           </p>
         </div>
         
-        <div style={responsiveStyles.videoGrid}>
+        <div style={baseBodyStyles.videoGrid}>
           {videoTestimonials.map((video, index) => (
             <VideoTestimonialCard
               key={video.id}
@@ -4643,21 +4289,21 @@ const BodySection = () => {
       </div>
 
       {/* Reviews Section */}
-      <div style={responsiveStyles.reviewsSection}>
+      <div style={baseBodyStyles.reviewsSection}>
         <div style={baseBodyStyles.reviewsHeader}>
-          <h2 style={responsiveStyles.reviewsTitle}>
+          <h2 style={baseBodyStyles.reviewsTitle}>
             Real reviews from our customers
           </h2>
-          <p style={responsiveStyles.reviewsSubtitle}>
+          <p style={baseBodyStyles.reviewsSubtitle}>
             Hear directly from Houston homeowners who have experienced the BraBos difference firsthand
           </p>
         </div>
         
-        <div style={responsiveStyles.reviewsGrid}>
+        <div style={baseBodyStyles.reviewsGrid}>
           {reviews.map((review, index) => (
             <div 
               key={review.id}
-              style={responsiveStyles.reviewCard(activeReview === index)}
+              style={baseBodyStyles.reviewCard(activeReview === index)}
               onMouseEnter={() => setActiveReview(index)}
               onMouseLeave={() => setActiveReview(null)}
               onTouchStart={() => handleTouchStart(setActiveReview, index)}
@@ -4695,13 +4341,17 @@ const BodySection = () => {
       {/* Meet The Visionaries Section */}
       <div style={{
         maxWidth: '1400px',
-        margin: '0 auto 120px auto',
-        padding: isMobile ? '0 20px' : '0 40px',
+        margin: '0 auto',
+        marginBottom: isMobile ? '80px' : '120px',
+        paddingTop: isMobile ? '0' : '0',
+        paddingRight: isMobile ? '20px' : '40px',
+        paddingBottom: isMobile ? '0' : '0',
+        paddingLeft: isMobile ? '20px' : '40px',
       }}>
         <div style={{
           display: 'flex',
           flexDirection: isMobile ? 'column' : 'row',
-          gap: isMobile ? '40px' : '80px',
+          gap: isMobile ? '40px' : isTablet ? '50px' : '80px',
           alignItems: 'center',
         }}>
           
@@ -4722,7 +4372,7 @@ const BodySection = () => {
                 alt="Mike & Ruth - Founders of OTON"
                 style={{
                   width: '100%',
-                  height: isMobile ? '400px' : '600px',
+                  height: isMobile ? '400px' : isTablet ? '500px' : '600px',
                   objectFit: 'cover',
                   borderRadius: '24px',
                   border: '4px solid #FFD700',
@@ -4732,18 +4382,21 @@ const BodySection = () => {
               {/* Floating Badge */}
               <div style={{
                 position: 'absolute',
-                bottom: isMobile ? '-20px' : '-30px',
+                bottom: isMobile ? '-20px' : isTablet ? '-25px' : '-30px',
                 left: isMobile ? '20px' : '40px',
                 right: isMobile ? '20px' : '40px',
                 backgroundColor: '#FFD700',
-                padding: isMobile ? '20px' : '30px',
+                paddingTop: isMobile ? '20px' : '30px',
+                paddingRight: isMobile ? '20px' : '30px',
+                paddingBottom: isMobile ? '20px' : '30px',
+                paddingLeft: isMobile ? '20px' : '30px',
                 borderRadius: '20px',
                 textAlign: 'center',
                 boxShadow: '0 20px 40px rgba(255, 215, 0, 0.4)',
                 transform: 'rotate(-2deg)',
               }}>
                 <div style={{
-                  fontSize: isMobile ? '18px' : '24px',
+                  fontSize: isMobile ? '18px' : isTablet ? '20px' : '24px',
                   fontWeight: '900',
                   color: '#001E50',
                   fontFamily: "'Playfair Display', serif",
@@ -4763,24 +4416,27 @@ const BodySection = () => {
             <div style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '12px',
+              gap: isMobile ? '8px' : '12px',
               backgroundColor: 'rgba(255, 215, 0, 0.1)',
-              padding: '16px 32px',
+              paddingTop: isMobile ? '12px' : '16px',
+              paddingRight: isMobile ? '20px' : '32px',
+              paddingBottom: isMobile ? '12px' : '16px',
+              paddingLeft: isMobile ? '20px' : '32px',
               borderRadius: '50px',
-              marginBottom: '40px',
+              marginBottom: isMobile ? '30px' : '40px',
               border: '2px solid rgba(255, 215, 0, 0.3)',
               backdropFilter: 'blur(10px)',
             }}>
               <span style={{
                 color: '#FFD700',
                 fontWeight: '900',
-                fontSize: '24px',
+                fontSize: isMobile ? '20px' : '24px',
                 fontFamily: "'Playfair Display', serif",
               }}>
                 ✦
               </span>
               <span style={{
-                fontSize: '18px',
+                fontSize: isMobile ? '14px' : '18px',
                 fontWeight: '900',
                 color: '#001E50',
                 letterSpacing: '3px',
@@ -4793,10 +4449,10 @@ const BodySection = () => {
             
             {/* Owners Title */}
             <div style={{
-              marginBottom: '30px',
+              marginBottom: isMobile ? '20px' : '30px',
             }}>
               <h2 style={{
-                fontSize: isMobile ? '2.5rem' : '4.5rem',
+                fontSize: isMobile ? '2.5rem' : isTablet ? '3.5rem' : '4.5rem',
                 fontWeight: '900',
                 color: '#001E50',
                 marginTop: 0,
@@ -4811,7 +4467,7 @@ const BodySection = () => {
                 Meet The Owners:
               </h2>
               <h2 style={{
-                fontSize: isMobile ? '3.5rem' : '6rem',
+                fontSize: isMobile ? '3.5rem' : isTablet ? '5rem' : '6rem',
                 fontWeight: '900',
                 color: '#001E50',
                 marginTop: 0,
@@ -4824,7 +4480,7 @@ const BodySection = () => {
                 Mike{" "}
                 <span style={{
                   color: '#FFD700',
-                  fontSize: isMobile ? '4rem' : '7rem',
+                  fontSize: isMobile ? '4rem' : isTablet ? '5.5rem' : '7rem',
                   display: 'inline-block',
                   margin: '0 20px',
                   transform: 'translateY(5px)',
@@ -4837,12 +4493,12 @@ const BodySection = () => {
             
             {/* Description */}
             <p style={{
-              fontSize: isMobile ? '1.25rem' : '1.5rem',
+              fontSize: isMobile ? '1.25rem' : isTablet ? '1.375rem' : '1.5rem',
               color: '#4B5563',
               lineHeight: '1.7',
               marginTop: 0,
               marginRight: 0,
-              marginBottom: '30px',
+              marginBottom: isMobile ? '20px' : '30px',
               marginLeft: 0,
               fontWeight: '900',
               fontFamily: "'Playfair Display', serif",
@@ -4854,30 +4510,30 @@ const BodySection = () => {
             {/* Story Section */}
             <div style={{
               backgroundColor: 'rgba(0, 30, 80, 0.03)',
-              padding: '40px',
+              padding: isMobile ? '30px' : '40px',
               borderRadius: '20px',
               border: '2px solid rgba(255, 215, 0, 0.2)',
-              marginBottom: '40px',
+              marginBottom: isMobile ? '30px' : '40px',
             }}>
               <h3 style={{
-                fontSize: isMobile ? '2rem' : '2.5rem',
+                fontSize: isMobile ? '2rem' : isTablet ? '2.25rem' : '2.5rem',
                 fontWeight: '900',
                 color: '#001E50',
                 marginTop: 0,
                 marginRight: 0,
-                marginBottom: '20px',
+                marginBottom: isMobile ? '16px' : '20px',
                 marginLeft: 0,
                 fontFamily: "'Playfair Display', serif",
               }}>
                 Our Story of Excellence
               </h3>
               <p style={{
-                fontSize: '1.125rem',
+                fontSize: isMobile ? '1rem' : '1.125rem',
                 color: '#4B5563',
                 lineHeight: '1.8',
                 marginTop: 0,
                 marginRight: 0,
-                marginBottom: '20px',
+                marginBottom: isMobile ? '16px' : '20px',
                 marginLeft: 0,
                 fontWeight: '900',
                 fontFamily: "'Playfair Display', serif",
@@ -4887,7 +4543,7 @@ const BodySection = () => {
                 service means in Houston and Boston.
               </p>
               <p style={{
-                fontSize: '1.125rem',
+                fontSize: isMobile ? '1rem' : '1.125rem',
                 color: '#4B5563',
                 lineHeight: '1.8',
                 marginTop: 0,
@@ -4913,9 +4569,12 @@ const BodySection = () => {
                 backgroundColor: '#001E50',
                 color: '#FFFFFF',
                 border: 'none',
-                padding: '20px 40px',
+                paddingTop: isMobile ? '16px' : '20px',
+                paddingRight: isMobile ? '24px' : '40px',
+                paddingBottom: isMobile ? '16px' : '20px',
+                paddingLeft: isMobile ? '24px' : '40px',
                 borderRadius: '50px',
-                fontSize: '1.125rem',
+                fontSize: isMobile ? '1rem' : '1.125rem',
                 fontWeight: '900',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
@@ -4959,37 +4618,37 @@ const BodySection = () => {
       </div>
 
       {/* Flexible Solutions Section - Now after Meet The Visionaries */}
-      <div style={responsiveStyles.flexibleSolutionsSection}>
+      <div style={baseBodyStyles.flexibleSolutionsSection}>
         <div style={baseBodyStyles.flexibleSolutionsHeader}>
           <div style={baseBodyStyles.flexibleSolutionsBadge}>
             <span style={baseBodyStyles.diamondIcon}>✦</span>
             <span style={baseBodyStyles.flexibleSolutionsBadgeText}>Flexible Solutions</span>
           </div>
           
-          <h2 style={responsiveStyles.flexibleSolutionsTitle}>
+          <h2 style={baseBodyStyles.flexibleSolutionsTitle}>
             Flexible Solutions for Busy Households
           </h2>
-          <h3 style={responsiveStyles.flexibleSolutionsSubtitle}>
+          <h3 style={baseBodyStyles.flexibleSolutionsSubtitle}>
             <span style={{ color: '#FFD700' }}>Recurring House Cleaning</span> That Fits Your Schedule
           </h3>
           
-          <p style={responsiveStyles.flexibleSolutionsDescription}>
+          <p style={baseBodyStyles.flexibleSolutionsDescription}>
             Choose the perfect cleaning schedule that matches your lifestyle and budget. 
             Whether you need weekly maintenance or monthly deep cleaning, we've got you covered.
           </p>
         </div>
         
-        <div style={responsiveStyles.cleaningPlansGrid}>
+        <div style={baseBodyStyles.cleaningPlansGrid}>
           {cleaningPlans.map((plan, index) => (
             <div 
               key={plan.id}
-              style={responsiveStyles.cleaningPlanCard(activeScheduleCard === index, plan.color)}
+              style={baseBodyStyles.cleaningPlanCard(activeScheduleCard === index, plan.color)}
               onMouseEnter={() => setActiveScheduleCard(index)}
               onMouseLeave={() => setActiveScheduleCard(null)}
               onTouchStart={() => handleTouchStart(setActiveScheduleCard, index)}
               onTouchEnd={() => handleTouchEnd(setActiveScheduleCard, null)}
             >
-              <div style={responsiveStyles.planHeader(plan.color)}>
+              <div style={baseBodyStyles.planHeader(plan.color)}>
                 <div style={baseBodyStyles.planBadge}>
                   {plan.badge}
                 </div>
@@ -5022,7 +4681,7 @@ const BodySection = () => {
                 
                 {/* UPDATED: Button now navigates to contact page */}
                 <button
-                  style={responsiveStyles.planButton(
+                  style={baseBodyStyles.planButton(
                     activeScheduleButton === `plan-${plan.id}`,
                     plan.color
                   )}
@@ -5059,17 +4718,17 @@ const BodySection = () => {
           ))}
         </div>
         
-        <div style={responsiveStyles.consultationSection}>
-          <h3 style={responsiveStyles.consultationTitle}>
+        <div style={baseBodyStyles.consultationSection}>
+          <h3 style={baseBodyStyles.consultationTitle}>
             Not Sure Which Plan Is Right For You?
           </h3>
-          <p style={responsiveStyles.consultationDescription}>
+          <p style={baseBodyStyles.consultationDescription}>
             Our cleaning experts will assess your home and recommend the perfect schedule 
             based on your lifestyle, home size, and cleaning needs.
           </p>
           {/* UPDATED: Button now navigates to contact page */}
           <button
-            style={responsiveStyles.consultationButton(activeConsultation)}
+            style={baseBodyStyles.consultationButton(activeConsultation)}
             onMouseEnter={() => setActiveConsultation(true)}
             onMouseLeave={() => setActiveConsultation(false)}
             onTouchStart={() => handleTouchStart(setActiveConsultation, true)}
@@ -5111,8 +4770,10 @@ const BodySection = () => {
         containerStyle={{
           marginTop: '0',
           marginBottom: '0',
-          paddingTop: '80px',
-          paddingBottom: '80px',
+          paddingTop: isMobile ? '60px' : '80px',
+          paddingBottom: isMobile ? '60px' : '80px',
+          paddingLeft: isMobile ? '20px' : '40px',
+          paddingRight: isMobile ? '20px' : '40px',
         }}
       />
     </section>
@@ -5186,7 +4847,10 @@ function Footer() {
       <div style={{
         maxWidth: '1400px',
         margin: '0 auto',
-        padding: isMobile ? '60px 20px 30px' : isTablet ? '70px 30px 35px' : '80px 40px 40px',
+        paddingTop: isMobile ? '60px' : '80px',
+        paddingRight: isMobile ? '20px' : '40px',
+        paddingBottom: isMobile ? '30px' : '40px',
+        paddingLeft: isMobile ? '20px' : '40px',
         position: 'relative',
       }}>
         {/* Top Section */}
@@ -5891,7 +5555,8 @@ function Footer() {
         <div style={{
           height: '1px',
           background: 'rgba(255, 255, 255, 0.1)',
-          margin: isMobile ? '30px 0' : '40px 0',
+          marginTop: isMobile ? '30px' : '40px',
+          marginBottom: isMobile ? '30px' : '40px',
           transition: 'all 0.3s ease',
         }}
         onMouseEnter={(e) => {
@@ -6008,7 +5673,10 @@ function Footer() {
                 alignItems: 'center',
                 gap: '8px',
                 background: 'rgba(255, 255, 255, 0.1)',
-                padding: isMobile ? '6px 10px' : '8px 12px',
+                paddingTop: isMobile ? '6px' : '8px',
+                paddingRight: isMobile ? '10px' : '12px',
+                paddingBottom: isMobile ? '6px' : '8px',
+                paddingLeft: isMobile ? '10px' : '12px',
                 borderRadius: '20px',
                 border: '1px solid rgba(255, 215, 0, 0.3)',
                 transition: 'all 0.3s ease',
@@ -6054,7 +5722,10 @@ function Footer() {
                 alignItems: 'center',
                 gap: '8px',
                 background: 'rgba(255, 255, 255, 0.1)',
-                padding: isMobile ? '6px 10px' : '8px 12px',
+                paddingTop: isMobile ? '6px' : '8px',
+                paddingRight: isMobile ? '10px' : '12px',
+                paddingBottom: isMobile ? '6px' : '8px',
+                paddingLeft: isMobile ? '10px' : '12px',
                 borderRadius: '20px',
                 border: '1px solid rgba(255, 215, 0, 0.3)',
                 transition: 'all 0.3s ease',
